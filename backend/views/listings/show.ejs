@@ -1,23 +1,57 @@
-<!DOCTYPE html>
+<!-- <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Document</title>
-</head>
+</head> -->
+<%layout("/layouts/boilerplate")%>
+
 <body>
-    <h1><%= listing.title %></h1>
-    <p><%= listing.description %></p>
-    <p>Price: ₹
-        <li>&#8377; <%=listing.price.toLocaleString("en-IN") %></li>
-    <p>Location: <%= listing.location %>, <%= listing.country %></p>
+    <div class="container mx-auto p-6">
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+            <!-- Image Section -->
+            <div class="relative group">
+                <img src="<%= listing.image.url %>" alt="<%= listing.title %>" class="w-full h-96 object-cover rounded-lg shadow-lg group-hover:opacity-90 transition">
+                <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
+                    <span class="text-white text-xl font-semibold">View Full Image</span>
+                </div>
+            </div>
+            
+            <!-- Details Section -->
+            <div>
+                <h1 class="text-3xl font-bold text-gray-800 mb-2"><%= listing.title %></h1>
+                <p class="text-gray-600 text-lg mb-4"><%= listing.description %></p>
+                <div class="flex items-center space-x-2 text-gray-700">
+                    <i class="fa-solid fa-map-marker-alt text-red-500"></i>
+                    <span class="text-lg"><%= listing.location %>, <%= listing.country %></span>
+                </div>
+                
+                <!-- Price -->
+                <div class="mt-4">
+                    <span class="text-2xl font-semibold text-gray-900">₹<%= listing.price %> / night</span>
+                </div>
+                
+                <!-- Amenities -->
+                <div class="mt-4">
+                    <h3 class="text-lg font-semibold text-gray-700 mb-2">Amenities:</h3>
+                    <div class="flex flex-wrap gap-2">
+                        <% listing.amenities.forEach(amenity => { %>
+                            <span class="px-3 py-1 bg-blue-100 text-blue-700 rounded-full text-sm font-medium"><%= amenity %></span>
+                        <% }) %>
+                    </div>
+                </div>
+                
+                <!-- Buttons -->
+                <div class="mt-6 flex space-x-4">
+                    <a href="/listings/<%= listing._id %>/edit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition">Edit Listing</a>
+                    <form action="/listings/<%= listing._id %>?_method=DELETE" method="POST">
+                        <button type="submit" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition">Delete</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </div>
     
-    <a href="/listings/<%=listing._id%>/edit">Edit Listing</a>
-    <form action="/listings/<%= listing._id %>?_method=DELETE" method="POST" class="mt-4">
-        <button type="submit"
-            class="w-full bg-red-500 text-white py-2 px-4 rounded-lg hover:bg-red-600 transition">
-            Delete Listing
-        </button>
-    </form>
 </body>
 </html>

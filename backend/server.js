@@ -73,6 +73,9 @@ app.get("/listings/:id", async (req,res)=>{
 app.post("/listings", async (req, res) => {
     try {
         let newListing = req.body.listing;
+        if (!newListing.amenities || !Array.isArray(newListing.amenities) || newListing.amenities.length === 0) {
+            newListing.amenities = ["WiFi", "Parking"]; // Default amenities
+        }
 
         if (!newListing.image) {
             newListing.image = { url: "", filename: "" };

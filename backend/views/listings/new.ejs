@@ -6,67 +6,87 @@
     <title>Submit Data</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head> -->
+
 <%layout("/layouts/boilerplate")%>
 
 <body class="bg-gray-100 flex items-center justify-center min-h-screen">
 
-    <div class="bg-white p-6 rounded-lg shadow-lg w-full max-w-lg">
-        <h1>Create a New Listing</h1>
-        <h2 class="text-2xl font-bold text-center text-gray-700 mb-4">Submit Your Data</h2>
-        
-        <form action="/listings" method="POST" class="space-y-4">
+    <div class="max-w-3xl mx-auto bg-white shadow-lg rounded-2xl p-6 mt-10">
+        <!-- Title Section -->
+        <h2 class="text-3xl font-bold text-gray-900 text-center">Create a New Listing</h2>
+        <p class="text-gray-500 text-center mt-2">Fill in the details to add your place</p>
+    
+        <form action="/listings" method="POST" class="mt-6 space-y-5">
             <!-- Title -->
             <div>
-                <label for="title" class="block text-sm font-medium text-gray-600">Title</label>
-                <input type="text" id="title" name="listing[title]" required
-                    class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
+                <label for="title" class="block text-gray-700 font-medium">Title</label>
+                <input type="text" id="title" name="listing[title]" required 
+                    class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
             </div>
-        
+    
             <!-- Description -->
             <div>
-                <label for="description" class="block text-sm font-medium text-gray-600">Description</label>
+                <label for="description" class="block text-gray-700 font-medium">Description</label>
                 <textarea id="description" name="listing[description]" required rows="3"
-                    class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400"></textarea>
+                    class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"></textarea>
             </div>
-        
+    
             <!-- Image URL -->
             <div>
-                <label for="imageUrl" class="block text-sm font-medium text-gray-600">Image URL</label>
+                <label for="imageUrl" class="block text-gray-700 font-medium">Image URL</label>
                 <input type="url" id="imageUrl" name="listing[image][url]" required
-                    class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
+                    class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
             </div>
-        
+    
             <!-- Price -->
             <div>
-                <label for="price" class="block text-sm font-medium text-gray-600">Price</label>
-                <input type="number" id="price" name="listing[price]" required
-                    class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
+                <label for="price" class="block text-gray-700 font-medium">Price per Night (in  ₹)</label>
+                <input type="number" id="price" name="listing[price]" required min="1"
+                    class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
             </div>
-        
+    
             <!-- Country -->
             <div>
-                <label for="country" class="block text-sm font-medium text-gray-600">Country</label>
+                <label for="country" class="block text-gray-700 font-medium">Country</label>
                 <input type="text" id="country" name="listing[country]" required
-                    class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
+                    class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
             </div>
-        
+    
             <!-- Location -->
             <div>
-                <label for="location" class="block text-sm font-medium text-gray-600">Location</label>
+                <label for="location" class="block text-gray-700 font-medium">Location</label>
                 <input type="text" id="location" name="listing[location]" required
-                    class="w-full p-2 border rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400">
+                    class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
             </div>
-        
+    
+            <!-- Amenities (Checkboxes like Airbnb) -->
+            <!-- <div>
+                <label class="block text-gray-700 font-medium mb-2">Amenities</label>
+                <div class="flex flex-wrap gap-3">
+                    <label class="flex items-center">
+                        <input type="checkbox" name="listing[amenities]" value="WiFi" class="mr-2"> WiFi
+                    </label>
+                    <label class="flex items-center">
+                        <input type="checkbox" name="listing[amenities]" value="Kitchen" class="mr-2"> Kitchen
+                    </label>
+                    <label class="flex items-center">
+                        <input type="checkbox" name="listing[amenities]" value="Parking" class="mr-2"> Free Parking
+                    </label>
+                    <label class="flex items-center">
+                        <input type="checkbox" name="listing[amenities]" value="Pool" class="mr-2"> Swimming Pool
+                    </label>
+                </div>
+            </div> -->
+    
             <!-- Submit Button -->
             <div>
                 <button type="submit"
-                    class="w-full bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition">
-                    Submit
+                    class="w-full bg-red-500 text-white py-3 px-6 rounded-lg text-lg font-semibold hover:bg-red-600 transition">
+                    Add Listing
                 </button>
             </div>
         </form>
-        
     </div>
-
+    
 </body>
 </html>

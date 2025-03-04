@@ -10,6 +10,10 @@ const ListingSchema = new mongoose.Schema({
   price: { type: Number, required: true },
   location: { type: String, required: true },
   country: { type: String, required: true },
+  amenities: {
+    type: [String], // Array of strings for amenities
+    default: [] // Default empty array
+},
 });
 
 const Listing = mongoose.model("Listing", ListingSchema);
