@@ -1,66 +1,60 @@
-<!-- <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Submit Data</title>
-    <script src="https://cdn.tailwindcss.com"></script>
-</head> -->
+<% layout("/layouts/boilerplate") %>
 
-<%layout("/layouts/boilerplate")%>
-
-<body class="bg-gray-100 flex items-center justify-center min-h-screen">
-
-    <div class="max-w-3xl mx-auto bg-white shadow-lg rounded-2xl p-6 mt-10">
-        <!-- Title Section -->
+<body>
+    <div class="w-full mx-auto bg-white shadow-lg rounded-2xl p-6 mt-10">
         <h2 class="text-3xl font-bold text-gray-900 text-center">Create a New Listing</h2>
         <p class="text-gray-500 text-center mt-2">Fill in the details to add your place</p>
-    
-        <form action="/listings" method="POST" class="mt-6 space-y-5">
-            <!-- Title -->
+
+        <form action="/listings" method="POST" class="mt-6 space-y-5 needs-validation" novalidate>
             <div>
                 <label for="title" class="block text-gray-700 font-medium">Title</label>
                 <input type="text" id="title" name="listing[title]" required 
-                    class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+                    class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2">
+                <div class="valid-feedback text-green-500">Looks good!</div>
+                <div class="invalid-feedback text-red-500">Please enter a title.</div>
             </div>
-    
-            <!-- Description -->
+
             <div>
                 <label for="description" class="block text-gray-700 font-medium">Description</label>
                 <textarea id="description" name="listing[description]" required rows="3"
-                    class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500"></textarea>
+                    class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2"></textarea>
+                <div class="valid-feedback text-green-500">Perfect!</div>
+                <div class="invalid-feedback text-red-500">Please enter a description.</div>
             </div>
-    
-            <!-- Image URL -->
+
             <div>
                 <label for="imageUrl" class="block text-gray-700 font-medium">Image URL</label>
-                <input type="url" id="imageUrl" name="listing[image][url]" required
-                    class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+                <input type="url" id="imageUrl" name="listing[image][url]" 
+                    class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2">
+                <div class="valid-feedback text-green-500">Valid image URL!</div>
+                <div class="invalid-feedback text-red-500">Please provide a valid image URL.</div>
             </div>
-    
-            <!-- Price -->
+
             <div>
-                <label for="price" class="block text-gray-700 font-medium">Price per Night (in  ₹)</label>
+                <label for="price" class="block text-gray-700 font-medium">Price per Night (in ₹)</label>
                 <input type="number" id="price" name="listing[price]" required min="1"
-                    class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+                    class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2">
+                <div class="valid-feedback text-green-500">Valid price!</div>
+                <div class="invalid-feedback text-red-500">Please enter a valid price.</div>
             </div>
-    
-            <!-- Country -->
+
             <div>
                 <label for="country" class="block text-gray-700 font-medium">Country</label>
                 <input type="text" id="country" name="listing[country]" required
-                    class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+                    class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2">
+                <div class="valid-feedback text-green-500">Nice choice!</div>
+                <div class="invalid-feedback text-red-500">Please enter a country.</div>
             </div>
-    
-            <!-- Location -->
+
             <div>
                 <label for="location" class="block text-gray-700 font-medium">Location</label>
                 <input type="text" id="location" name="listing[location]" required
-                    class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2 focus:ring-red-500">
+                    class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2">
+                <div class="valid-feedback text-green-500">Location looks good!</div>
+                <div class="invalid-feedback text-red-500">Please enter a location.</div>
             </div>
-    
-            <!-- Amenities (Checkboxes like Airbnb) -->
-            <!-- <div>
+
+            <div>
                 <label class="block text-gray-700 font-medium mb-2">Amenities</label>
                 <div class="flex flex-wrap gap-3">
                     <label class="flex items-center">
@@ -76,9 +70,8 @@
                         <input type="checkbox" name="listing[amenities]" value="Pool" class="mr-2"> Swimming Pool
                     </label>
                 </div>
-            </div> -->
-    
-            <!-- Submit Button -->
+            </div>
+
             <div>
                 <button type="submit"
                     class="w-full bg-red-500 text-white py-3 px-6 rounded-lg text-lg font-semibold hover:bg-red-600 transition">
@@ -87,6 +80,166 @@
             </div>
         </form>
     </div>
-    
+
+    <script>
+        (function () {
+            'use strict';
+            var form = document.querySelector('.needs-validation');
+            var inputs = form.querySelectorAll('input, textarea');
+
+            form.addEventListener('submit', function (event) {
+                var isValid = true;
+
+                inputs.forEach(function (input) {
+                    if (!input.checkValidity()) {
+                        input.classList.add('border-red-500', 'focus:ring-red-500');
+                        input.classList.remove('border-green-500', 'focus:ring-green-500');
+                        input.nextElementSibling.classList.add('d-block'); // Show invalid feedback
+                        isValid = false;
+                    } else {
+                        input.classList.add('border-green-500', 'focus:ring-green-500');
+                        input.classList.remove('border-red-500', 'focus:ring-red-500');
+                        input.nextElementSibling.classList.add('d-block'); // Show valid feedback
+                    }
+                });
+
+                if (!isValid) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+            });
+
+            inputs.forEach(function (input) {
+                input.addEventListener('input', function () {
+                    if (input.checkValidity()) {
+                        input.classList.add('border-green-500', 'focus:ring-green-500');
+                        input.classList.remove('border-red-500', 'focus:ring-red-500');
+                        input.nextElementSibling.classList.add('d-block'); // Show valid feedback
+                        input.nextElementSibling.nextElementSibling.classList.remove('d-block'); // Hide invalid feedback
+                    } else {
+                        input.classList.add('border-red-500', 'focus:ring-red-500');
+                        input.classList.remove('border-green-500', 'focus:ring-green-500');
+                        input.nextElementSibling.classList.remove('d-block'); // Hide valid feedback
+                        input.nextElementSibling.nextElementSibling.classList.add('d-block'); // Show invalid feedback
+                    }
+                });
+            });
+        })();
+    </script>
 </body>
-</html>
+
+
+<!-- <body>
+    <div class="w-full mx-auto bg-white shadow-lg rounded-2xl p-6 mt-10">
+        <h2 class="text-3xl font-bold text-gray-900 text-center">Create a New Listing</h2>
+        <p class="text-gray-500 text-center mt-2">Fill in the details to add your place</p>
+
+        <form action="/listings" method="POST" class="mt-6 space-y-5 needs-validation" novalidate>
+            <div>
+                <label for="title" class="block text-gray-700 font-medium">Title</label>
+                <input type="text" id="title" name="listing[title]" required class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2">
+                <div class="invalid-feedback text-red-500">Please enter a title.</div>
+            </div>
+
+            <div>
+                <label for="description" class="block text-gray-700 font-medium">Description</label>
+                <textarea id="description" name="listing[description]" required rows="3"
+                    class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2"></textarea>
+                <div class="invalid-feedback text-red-500">Please enter a description.</div>
+            </div>
+
+            <div>
+                <label for="imageUrl" class="block text-gray-700 font-medium">Image URL</label>
+                <input type="url" id="imageUrl" name="listing[image][url]" class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2">
+                <div class="invalid-feedback text-red-500">Please provide a valid image URL.</div>
+            </div>
+
+            <div>
+                <label for="price" class="block text-gray-700 font-medium">Price per Night (in ₹)</label>
+                <input type="number" id="price" name="listing[price]" required min="1"
+                    class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2">
+                <div class="invalid-feedback text-red-500">Please enter a valid price.</div>
+            </div>
+
+            <div>
+                <label for="country" class="block text-gray-700 font-medium">Country</label>
+                <input type="text" id="country" name="listing[country]" required
+                    class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2">
+                <div class="invalid-feedback text-red-500">Please enter a country.</div>
+            </div>
+
+            <div>
+                <label for="location" class="block text-gray-700 font-medium">Location</label>
+                <input type="text" id="location" name="listing[location]" required
+                    class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2">
+                <div class="invalid-feedback text-red-500">Please enter a location.</div>
+            </div>
+
+            <div>
+                <label class="block text-gray-700 font-medium mb-2">Amenities</label>
+                <div class="flex flex-wrap gap-3">
+                    <label class="flex items-center">
+                        <input type="checkbox" name="listing[amenities]" value="WiFi" class="mr-2"> WiFi
+                    </label>
+                    <label class="flex items-center">
+                        <input type="checkbox" name="listing[amenities]" value="Kitchen" class="mr-2"> Kitchen
+                    </label>
+                    <label class="flex items-center">
+                        <input type="checkbox" name="listing[amenities]" value="Parking" class="mr-2"> Free Parking
+                    </label>
+                    <label class="flex items-center">
+                        <input type="checkbox" name="listing[amenities]" value="Pool" class="mr-2"> Swimming Pool
+                    </label>
+                </div>
+            </div>
+
+            <div>
+                <button type="submit"
+                    class="w-full bg-red-500 text-white py-3 px-6 rounded-lg text-lg font-semibold hover:bg-red-600 transition">
+                    Add Listing
+                </button>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        (function () {
+            'use strict';
+            var form = document.querySelector('.needs-validation');
+            var inputs = form.querySelectorAll('input, textarea');
+
+            form.addEventListener('submit', function (event) {
+                var isValid = true;
+
+                inputs.forEach(function (input) {
+                    if (!input.checkValidity()) {
+                        input.classList.add('border-red-500', 'focus:ring-red-500');
+                        input.classList.remove('border-green-500', 'focus:ring-green-500');
+                        isValid = false;
+                    } else {
+                        input.classList.add('border-green-500', 'focus:ring-green-500');
+                        input.classList.remove('border-red-500', 'focus:ring-red-500');
+                    }
+                });
+
+                if (!isValid) {
+                    event.preventDefault();
+                    event.stopPropagation();
+                }
+            });
+
+            inputs.forEach(function (input) {
+                input.addEventListener('input', function () {
+                    if (input.checkValidity()) {
+                        input.classList.add('border-green-500', 'focus:ring-green-500');
+                        input.classList.remove('border-red-500', 'focus:ring-red-500');
+                    } else {
+                        input.classList.add('border-red-500', 'focus:ring-red-500');
+                        input.classList.remove('border-green-500', 'focus:ring-green-500');
+                    }
+                });
+            });
+        })();
+    </script>
+</body> -->
+

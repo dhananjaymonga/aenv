@@ -101,27 +101,8 @@
         </form>
     </div>
     
-    <script>
-        // Basic form validation feedback
-        document.querySelector('form').addEventListener('submit', function(event) {
-            let formIsValid = true;
-            const inputs = document.querySelectorAll('input[required], textarea[required]');
-            inputs.forEach(input => {
-                const helpText = document.getElementById(input.id + 'Help');
-                if (!input.validity.valid) {
-                    formIsValid = false;
-                    helpText.classList.remove('hidden');
-                    input.classList.add('border-red-500');
-                } else {
-                    helpText.classList.add('hidden');
-                    input.classList.remove('border-red-500');
-                }
-            });
-
-            if (!formIsValid) {
-                event.preventDefault();
-            }
-        });
+    <script src="/js/script.js"></script>
+       
     </script>
 </body>
 </html>

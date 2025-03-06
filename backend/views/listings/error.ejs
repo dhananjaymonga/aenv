@@ -1,0 +1,18 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Error <%= statusCode %></title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 flex items-center justify-center  h-screen">
+    <div class="text-center p-10 bg-white shadow-lg rounded-lg">
+        <svg class="bi flex-shrink-0 me-2" width="24" height="24" role="img" aria-label="Info:"><use xlink:href="#info-fill"/></svg>
+
+        <h1 class="text-6xl font-bold text-red-500"><%=statusCode %></h1>
+        <p class="text-xl text-gray-600 mt-4"><%=message %></p>
+        <a href="/listings" class="mt-6 inline-block bg-blue-500 text-white px-6 py-2 rounded-lg hover:bg-blue-600 transition">Go Home</a>
+    </div>
+</body>
+</html>
