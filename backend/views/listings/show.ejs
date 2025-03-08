@@ -18,7 +18,6 @@
                 </div>
             </div>
             
-            <!-- Details Section -->
             <div>
                 <h1 class="text-3xl font-bold text-gray-800 mb-2"><%= listing.title %></h1>
                 <p class="text-gray-600 text-lg mb-4"><%= listing.description %></p>
@@ -27,7 +26,6 @@
                     <span class="text-lg"><%= listing.location %>, <%= listing.country %></span>
                 </div>
                 
-                <!-- Price -->
                 <div class="mt-4">
                     <span class="text-2xl font-semibold text-gray-900">₹<%= listing.price %> / night</span>
                 </div>
@@ -42,7 +40,7 @@
                     </div>
                 </div>
                 
-                <!-- Buttons -->
+                
                 <div class="mt-6 flex space-x-4">
                     <a href="/listings/<%= listing._id %>/edit" class="bg-blue-500 text-white px-4 py-2 rounded-lg hover:bg-blue-600 transition">Edit Listing</a>
                     <form action="/listings/<%= listing._id %>?_method=DELETE" method="POST">
@@ -50,8 +48,104 @@
                     </form>
                 </div>
             </div>
+
+        </div>
+       <!-- Review Form -->
+<form action="/listings/<%= listing._id %>/reviews" method="POST" class="mt-4 bg-white p-4 rounded-lg shadow-md border rounded-xl">
+    <div class="flex items-center mb-3">
+        <!-- Always Show Default Avatar -->
+        <img src="https://i.pravatar.cc/100?img=8" alt="User Avatar" 
+             class="w-12 h-12 rounded-full shadow-md border border-gray-300">
+
+        <span class="ml-3 text-gray-800 font-semibold text-lg">You</span>
+    </div>
+
+    <textarea name="review[comment]" rows="3" 
+              class="w-full p-3 border rounded-lg focus:ring focus:ring-blue-300 text-gray-800" 
+              placeholder="Write your review..." required></textarea>
+
+    <div class="mt-3 flex items-center space-x-2">
+        <span class="text-gray-700 font-medium">Rating:</span>
+        <input type="range" name="review[rating]" min="1" max="5" step="1" value="3" 
+               class="w-40 cursor-pointer accent-blue-500">
+        <span id="ratingValue" class="text-gray-700 font-semibold">3 ★</span>
+    </div>
+
+    <button type="submit" 
+            class="mt-4 bg-green-500 text-white px-4 py-2 rounded-lg hover:bg-green-600 transition font-medium">
+        Submit Review
+    </button>
+</form>
+
+<!-- show review -->
+
+<div class="mt-10">
+    <h2 class="text-2xl font-semibold text-gray-800">Reviews</h2>
+
+    <div class="mt-10">
+        <h2 class="text-2xl font-semibold text-gray-800">Reviews</h2>
+    
+        <div class="mt-4 space-y-6">
+            <% listing.reviews.forEach(review => { %>
+                <div class="bg-white p-6 rounded-xl shadow-md border border-gray-200">
+                    <div class="flex items-center mb-4">
+                        <!-- Fixed Default Avatar -->
+                        <img src="https://i.pravatar.cc/100?img=8" 
+                             alt="User Avatar" 
+                             class="w-12 h-12 rounded-full shadow border border-gray-300">
+                        
+                        <div class="ml-4">
+                            <span class="text-gray-900 font-semibold text-lg">Anonymous</span>
+                            <div class="flex items-center text-yellow-500 mt-1">
+                                <% for (let i = 0; i < review.rating; i++) { %>
+                                    <i class="fa-solid fa-star"></i>
+                                <% } %>
+                                <% for (let i = review.rating; i < 5; i++) { %>
+                                    <i class="fa-regular fa-star text-gray-400"></i>
+                                <% } %>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="relative">
+                        <button class="text-gray-500 hover:text-gray-700 focus:outline-none" onclick="toggleDropdown('<%= review._id %>')">
+                            <i class="fa-solid fa-ellipsis-vertical text-lg"></i>
+                        </button>
+                        <div id="dropdown-<%= review._id %>" class="hidden absolute right-0 mt-2 w-32 bg-white rounded-md shadow-lg border">
+                            <form action="/listings/<%= listing._id %>/reviews/<%= review._id %>?_method=DELETE" method="POST">
+                                <button type="submit" class="block w-full text-left px-4 py-2 text-red-500 hover:bg-red-50">
+                                    <i class="fa-solid fa-trash"></i> Delete
+                                </button>
+                            </form>
+                        </div>
+                    </div>
+    
+                    <p class="text-gray-700 text-lg leading-relaxed"><%= review.comment %></p>
+                </div>
+            <% }) %>
         </div>
     </div>
     
+    </div>
+    <script>
+        const ratingInput = document.querySelector('input[name="review[rating]"]');
+        const ratingValue = document.getElementById('ratingValue');
+    
+        ratingInput.addEventListener('input', function() {
+            ratingValue.textContent = `${this.value} ★`; // Update rating text
+        });
+        function toggleDropdown(reviewId) {
+    document.querySelectorAll("[id^='dropdown-']").forEach(el => {
+        if (el.id !== `dropdown-${reviewId}`) el.classList.add("hidden");
+    });
+    document.getElementById(`dropdown-${reviewId}`).classList.toggle("hidden");
+}
+
+// Hide dropdown if clicked outside
+document.addEventListener("click", function (event) {
+    if (!event.target.closest(".relative")) {
+        document.querySelectorAll("[id^='dropdown-']").forEach(el => el.classList.add("hidden"));
+    }
+}); 
+    </script>
 </body>
 </html>
