@@ -7,6 +7,8 @@ const engine = require("ejs-mate");
 
 const listingRoutes = require("./routes/listings");
 const reviewRoutes = require("./routes/review");
+const UserRouter = require("./routes/user")
+
 // const reviewRoutes = require("./routes/reviews");
 
 const wrapAsync = require("./utils/WrapAsync");
@@ -18,7 +20,7 @@ const Review = require("./modules/review");
 const session =require("express-session")
 const flash=require("connect-flash")
 const passport =require("passport")
-const Li21\ocalStrategy= require("passport-local")
+const LocalStrategy= require("passport-local")
 const User=require("./modules/user")
 
 const Port = 5000;
@@ -55,13 +57,16 @@ app.use(flash())
 app.use(passport.initialize())
 app.use(passport.session())
 passport.use(new LocalStrategy(User.authenticate))
+passport.serializeUser( User.serializeUser());
+passport.deserializeUser(User.deserializeUser)
 app.use((req,res,next)=>{
-    console.log("Flash Messages in Middleware:", req.flash("success"), req.flash("error"))
-    res.locals.success = req.flash("success")[0] || ""; // Ensure it's always a string
-    res.locals.error = req.flash("error")[0] || "";
+    res.locals.currentUser = req.user || null;
+    res.locals.success = req.flash("success");  
+    res.locals.error = req.flash("error");
+    console.log("Flash Messages in Middleware:", res.locals.success, res.locals.error);
+    next();
+});
 
-        next()
-})
 
 
 // Routes
@@ -71,6 +76,16 @@ app.get("/", wrapAsync(async (req, res) => {
 
 app.use("/listings", listingRoutes);
 app.use("/listings/:id/reviews", reviewRoutes);
+app.use("/",UserRouter)
+
+app.get("/gndhruser", async (req,res)=>{
+    let fakeuser= new User({
+        email:"student@gmail.com",
+        username:"dhan"
+    })
+    let registeruser=await User.register(fakeuser,"helloworld")
+    res.send(registeruser)
+})
 
 // 404 Not Found
 app.use((req, res) => {

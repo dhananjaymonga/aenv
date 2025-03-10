@@ -11,7 +11,7 @@ const Joi = require('joi');
 const session =require("express-session")
 
 const flash=require("connect-flash")
-
+const {isLoggedIn}=require("../Middleware")
 
 const validateListing = (req, res, next) => {
     const { error } = listingSchema.validate(req.body.listing);
@@ -27,8 +27,13 @@ router.get("/", wrapAsync(async (req, res) => {
   }));
   
   // Form for new listing
-  router.get("/new", wrapAsync(async (req, res) => {
-    res.render("listings/new");
+  router.get("/new",isLoggedIn, wrapAsync(async (req, res) => {
+    console.log(req.user)
+  
+   
+      res.render("listings/new");
+
+    
   }));
   
   // Show listing details
@@ -43,7 +48,7 @@ res.redirect("/listings")
   }));
   
   // Create new listing
-  router.post("/", validateListing, wrapAsync(async (req, res) => {
+  router.post("/",isLoggedIn, validateListing, wrapAsync(async (req, res) => {
     let newListing = req.body.listing;
   
     if (!Array.isArray(newListing.amenities)) {
@@ -65,7 +70,7 @@ res.redirect("/listings")
   }));
   
   // Edit listing form
-  router.get("/:id/edit", wrapAsync(async (req, res) => {
+  router.get("/:id/edit",isLoggedIn, wrapAsync(async (req, res) => {
     const { id } = req.params;
     const listing = await Listing.findById(id);
     if(!listing){
@@ -76,7 +81,7 @@ res.redirect("/listings")
   }));
   
   // Update listing
-  router.put("/:id", validateListing, wrapAsync(async (req, res) => {
+  router.put("/:id",isLoggedIn, validateListing, wrapAsync(async (req, res) => {
     const { id } = req.params;
   
     if (!req.body.listing.image || !req.body.listing.image.url) {
@@ -90,7 +95,7 @@ res.redirect("/listings")
   }));
   
   // Delete listing
-  router.delete("/:id", wrapAsync(async (req, res) => {
+  router.delete("/:id",isLoggedIn, wrapAsync(async (req, res) => {
     const { id } = req.params;
     await Listing.findByIdAndDelete(id);
     req.flash("success", " Listingsn Deleted");

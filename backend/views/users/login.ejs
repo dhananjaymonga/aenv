@@ -1,0 +1,71 @@
+<% layout("/layouts/boilerplate") %>
+
+<script>
+  window.onload = function () {
+    const params = new URLSearchParams(window.location.search);
+    const error = params.get("error");
+
+    if (error) {
+      alert(error);
+    }
+  };
+</script>
+
+<div class="fixed inset-0 flex items-center justify-center bg-black bg-opacity-50 mt-6">
+  <div class="bg-white p-6 rounded-2xl shadow-xl max-w-sm w-full mt-3">
+    
+    <!-- ✅ Flash Messages -->
+    <% if (error && error.length) { %>
+      <div class="bg-red-500 text-white p-3 rounded-lg mb-4 text-center mt-6">
+        <%= error %>  <!-- ❗ Error message -->
+      </div>
+    <% } %>
+
+    <% if (success && success.length) { %>
+      <div class="bg-green-500 text-white p-3 rounded-lg mb-4 text-center mt-6">
+        <%= success %>  <!-- ✅ Success message -->
+      </div>
+    <% } %>
+
+    <h2 class="text-xl font-semibold text-center">Log in</h2>
+    <p class="text-gray-500 text-sm text-center mt-1">Welcome back!</p>
+
+    <form action="/login" method="POST" class="space-y-3 mt-4">
+      <input type="text" name="username" placeholder="username" 
+        class="w-full border rounded-lg px-3 py-2 focus:ring focus:ring-gray-300" required />
+      <input type="password" name="password" placeholder="Password" 
+        class="w-full border rounded-lg px-3 py-2 focus:ring focus:ring-gray-300" required />
+      <button type="submit" class="w-full bg-red-500 text-white py-2 rounded-lg hover:bg-red-600">
+        Continue
+      </button>
+    </form>
+
+    <div class="flex items-center my-4">
+      <hr class="flex-grow border-gray-300" />
+      <span class="text-gray-400 text-xs px-2">or</span>
+      <hr class="flex-grow border-gray-300" />
+    </div>
+
+    <div class="space-y-3">
+      <a href="/auth/google" class="flex items-center gap-2 justify-center border p-2 rounded-lg hover:bg-gray-100">
+        <svg class="w-5 h-5" viewBox="0 0 48 48"><path fill="#4285F4" d="M44.5 20H24v8.5h11.8C33.3 34.6 29 38 24 38c-7.7 0-14-6.3-14-14s6.3-14 14-14c3.6 0 6.9 1.3 9.4 3.6L40 6C35.7 2.3 30.1 0 24 0 10.8 0 0 10.8 0 24s10.8 24 24 24c12.7 0 24-9.3 24-24 0-1.3-.1-2.7-.3-4z"/></svg>
+        <span>Continue with Google</span>
+      </a>
+
+      <a href="/auth/apple" class="flex items-center gap-2 justify-center border p-2 rounded-lg hover:bg-gray-100">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="black"><path d="M16.5 1.5a5 5 0 0 1-1.35 3.53c-.89.98-2.12 1.61-3.54 1.61a5 5 0 0 1 1.36-3.53A4.94 4.94 0 0 1 16.5 1.5zM12.52 7.7c1.13 0 2.38-.62 3.34-1.61a6.43 6.43 0 0 0 1.43-3.67 5.56 5.56 0 0 0-3.86 1.76c-1.12 1.23-1.94 2.98-1.94 3.91h.03zm5.65 4.86c-.25-.3-.5-.55-.83-.55-.34 0-.61.17-.86.46-.24.28-.52.67-.52 1.3 0 .62.28 1 .52 1.29.24.29.52.45.86.45.33 0 .58-.23.83-.53.24-.3.5-.67.5-1.26 0-.58-.26-.95-.5-1.24zM12.07 14c-.27.36-.63.58-1.04.58-.41 0-.75-.22-1.03-.58-.27-.36-.5-.83-.5-1.41s.23-1.05.5-1.42c.28-.36.62-.57 1.03-.57.41 0 .77.2 1.04.57.26.37.5.84.5 1.42 0 .58-.24 1.05-.5 1.41z"/></svg>
+        <span>Continue with Apple</span>
+      </a>
+
+      <a href="/auth/facebook" class="flex items-center gap-2 justify-center border p-2 rounded-lg hover:bg-gray-100">
+        <svg class="w-5 h-5" viewBox="0 0 24 24" fill="#1877F2"><path d="M22.675 0H1.325C.594 0 0 .593 0 1.326v21.348C0 23.405.594 24 1.325 24H12.82v-9.294H9.692V11.08h3.128V8.338c0-3.097 1.893-4.785 4.66-4.785 1.325 0 2.463.099 2.794.143v3.24h-1.916c-1.504 0-1.794.717-1.794 1.766v2.314h3.587l-.467 3.626h-3.12V24h6.116C23.406 24 24 23.405 24 22.674V1.326C24 .593 23.406 0 22.675 0z"/></svg>
+        <span>Continue with Facebook</span>
+      </a>
+    </div>
+
+    <p class="text-gray-500 text-sm text-center mt-3">
+      Don't have an account? 
+      <a href="/signup" class="text-red-500 hover:underline">Sign up</a>
+    </p>
+  </div>
+</div>
