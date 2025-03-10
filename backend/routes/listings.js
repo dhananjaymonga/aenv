@@ -8,6 +8,9 @@ const { listingSchema, reviewSchema } = require('../schema');
 
 const ExpressError = require('../utils/ExpressError');
 const Joi = require('joi');
+const session =require("express-session")
+
+const flash=require("connect-flash")
 
 
 const validateListing = (req, res, next) => {
@@ -32,6 +35,10 @@ router.get("/", wrapAsync(async (req, res) => {
   router.get("/:id", wrapAsync(async (req, res) => {
     const { id } = req.params;
     const listing = await Listing.findById(id).populate("reviews");
+    if(!listing){
+      req.flash("error", " Listings  you requested for does not exist  ");
+res.redirect("/listings")
+    }
     res.render("listings/show", { listing });
   }));
   
@@ -51,6 +58,9 @@ router.get("/", wrapAsync(async (req, res) => {
   
     const listing = new Listing(newListing);
     await listing.save();
+    req.flash("success", "New Listings Created");
+    console.log("Flash message set:", req.flash("success")); // Debugging
+
     res.redirect("/listings");
   }));
   
@@ -58,6 +68,10 @@ router.get("/", wrapAsync(async (req, res) => {
   router.get("/:id/edit", wrapAsync(async (req, res) => {
     const { id } = req.params;
     const listing = await Listing.findById(id);
+    if(!listing){
+      req.flash("error", " Listings  you requested for does not exist  ");
+res.redirect("/listings")
+    }
     res.render("listings/edit", { listing });
   }));
   
@@ -70,6 +84,8 @@ router.get("/", wrapAsync(async (req, res) => {
     }
   
     await Listing.findByIdAndUpdate(id, { ...req.body.listing });
+    req.flash("success", "Updated Listings Updates  ");
+
     res.redirect(`/listings/${id}`);
   }));
   
@@ -77,6 +93,8 @@ router.get("/", wrapAsync(async (req, res) => {
   router.delete("/:id", wrapAsync(async (req, res) => {
     const { id } = req.params;
     await Listing.findByIdAndDelete(id);
+    req.flash("success", " Listingsn Deleted");
+
     res.redirect("/listings");
   }));
   

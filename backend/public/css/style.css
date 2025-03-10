@@ -33,3 +33,18 @@ body {
 .img-container:hover img {
     transform: scale(1.1); /* Zoom effect on hover */
 } 
+@keyframes slide-in {
+    from {
+      transform: translateX(100%);
+      opacity: 0;
+    }
+    to {
+      transform: translateX(0);
+      opacity: 1;
+    }
+  }
+  
+  .animate-slide-in {
+    animation: slide-in 0.5s ease-out;
+  }
+  

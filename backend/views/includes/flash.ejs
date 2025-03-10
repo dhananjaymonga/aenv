@@ -1,0 +1,39 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <% if (typeof success !== 'undefined' && success.length > 0) { %>
+        <div id="flash-message" class="fixed top-5 right-5 bg-green-500 text-white px-4 py-2 rounded-lg shadow-md animate-slide-in">
+            <%= success %>
+            <button onclick="closeFlashMessage()" class="ml-4 text-white font-bold">&times;</button>
+        </div>
+    
+        <script>
+            function closeFlashMessage() {
+                document.getElementById('flash-message').style.display = 'none';
+            }
+            setTimeout(closeFlashMessage, 5000);
+        </script>
+    <% } %>
+    
+    <% if (typeof error !== 'undefined' && error.length > 0) { %>
+        <div id="flash-message-error" class="fixed top-5 right-5 bg-red-500 text-white px-4 py-2 rounded-lg shadow-md animate-slide-in">
+            <%= error %>
+            <button onclick="closeFlashMessageError()" class="ml-4 text-white font-bold">&times;</button>
+        </div>
+    
+        <script>
+            function closeFlashMessageError() {
+                document.getElementById('flash-message-error').style.display = 'none';
+            }
+            setTimeout(closeFlashMessageError, 5000);
+        </script>
+    <% } %>
+    
+      
+</body>
+</html>
