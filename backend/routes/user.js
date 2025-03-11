@@ -9,6 +9,8 @@ const session =require("express-session")
 
 const flash=require("connect-flash");
 const passport = require("passport");
+const {saveRedirectUrl}=require("../Middleware")
+
 
 router.get("/signup", (req, res) => {
     res.render("users/signup");
@@ -27,29 +29,42 @@ router.post("/signup", wrapAsync(async(req, res) => {
         const registeredUser = await User.register(newUser, password);
         
         console.log("User Registered:", registeredUser);
+        req.logIn(registeredUser,(err)=>{
+            if(err){
+                return next(err)
+            }
+            req.flash("success", "Welcome to Airbnb!");
+            res.redirect("/listings");
+
+        })
         
-        req.flash("success", "Welcome to Airbnb!");
-        res.redirect("/listings");
+        
     } catch (error) {
         req.flash("error", error.message);
         res.redirect("/signup");
     }
 }));
-router.post("/login",
-    passport.authenticate("local", {
-      failureRedirect: "/login",
-      failureFlash: "Invalid email or password!" // 👈 Yeh message flash karega
-    }),
-    (req, res) => {
-      req.flash("success", "Welcome back!");
-      res.redirect("/listings");
-    }
-  );
+router.post("/login",saveRedirectUrl, (req, res, next) => {
+    passport.authenticate("local", (err, user, info) => {
+        if (err) return next(err);
+        if (!user) {
+            req.flash("error", "Invalid email or password!");
+            return res.redirect("/login");
+        }
+        req.logIn(user, (err) => {
+            if (err) return next(err);
+            req.flash("success", "Welcome back!");
+            let redirectUrl=res.locals.redirectUrl || "/listings"
+            return res.redirect( redirectUrl);
+        });
+    })(req, res, next);
+});
+
   
 router.get("/login",(req,res)=>{
     res.render("users/login")
 })
-router.get("logout",(req,res,next)=>{
+router.get("/logout",(req,res,next)=>{
     req.logOut((err)=>{
         if(err){
             next(err)

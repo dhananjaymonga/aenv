@@ -28,6 +28,7 @@
 // module.exports = Listing;
 const mongoose = require("mongoose");
 const Review = require("./review"); 
+const User =require("./user")
 const ListingSchema = new mongoose.Schema({
   title: { type: String, required: true, trim: true },
   description: { type: String, required: true, trim: true },
@@ -47,6 +48,10 @@ const ListingSchema = new mongoose.Schema({
     set: (arr) => [...new Set(arr)], // ✅ Remove duplicates
   },
   reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: "Review" }],
+  owner:{
+    type:mongoose.Schema.Types.ObjectId,
+    red:"User"
+  }
 
 }, { timestamps: true });
 
