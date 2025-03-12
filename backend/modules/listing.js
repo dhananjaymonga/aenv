@@ -61,7 +61,8 @@ ListingSchema.post("findOneAndDelete", async function (listing) {
           _id: { $in: listing.reviews }
       });
   }
-});
+});console.log(hi)
+
 
 const Listing = mongoose.model("Listing", ListingSchema);
 module.exports = Listing;
