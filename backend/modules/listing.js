@@ -38,6 +38,7 @@ const ListingSchema = new mongoose.Schema({
       trim: true,
       default: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fHRyYXZlbHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60", // ✅ New Default Image
     },
+    filename: { type: String },
   },
   price: { type: Number, required: true, min: 0 },
   location: { type: String, required: true, trim: true },
@@ -48,13 +49,14 @@ const ListingSchema = new mongoose.Schema({
     set: (arr) => [...new Set(arr)], // ✅ Remove duplicates
   },
   reviews: [{ type: mongoose.Schema.Types.ObjectId, ref: "Review" }],
-  owner:{
-    type:mongoose.Schema.Types.ObjectId,
-    red:"User"
-  }
+ 
+  owner: {
+    type:mongoose. Schema.Types.ObjectId,
+    ref: 'User' 
+},
 
 }, { timestamps: true });
-console.log(hi)
+// console.log(hi)
 
 
 ListingSchema.post("findOneAndDelete", async function (listing) {   
@@ -63,8 +65,8 @@ ListingSchema.post("findOneAndDelete", async function (listing) {
           _id: { $in: listing.reviews }
       });
   }
-});console.log(hi)
-
+})
+  
 
 const Listing = mongoose.model("Listing", ListingSchema);
 module.exports = Listing;

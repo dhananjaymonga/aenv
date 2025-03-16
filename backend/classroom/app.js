@@ -7,6 +7,19 @@ const session=require("express-session");
 const flash=require("connect-flash");
 const path=require("path");
 const { name } = require("ejs");
+require("dotenv").config(); 
+
+// require("dotenv").config
+
+// console.log("URL:", process.env.URL); // ✅ Should print "HTNB"
+
+console.log(process.env.URL)
+const multer = require("multer");
+const { storage } = require("../cloudConfig"); 
+
+// const {storage} = require("./cloudConfig")
+// const upload = multer({ storage }); // ✅ Cloudinary/S3 ke liye sahi tareeka
+
 app.use(flash());
 app.use(session({ secret:"dhananjay", resave:false, saveUninitialized:true}));
 app.set("view engine", "ejs");
@@ -61,7 +74,21 @@ app.get("/wet",(req,res)=>{
 })
 app.use("/user",user);
 app.use("/post",post);
+app.get("/new",(req,res)=>{
+    res.render("new.ejs")
+})
+const { upload } = require("../cloudConfig"); // ✅ Import properly
 
+app.post("/listings", upload.single("image"), (req, res) => {
+    // console.log(req.file); // ✅ Check Cloudinary URL
+    // if (!req.file || !req.file.path) {
+    //     return res.status(400).send("File upload failed!");
+    // }
+    // res.send({ imageUrl: req.file.path }); // ✅ Send Cloudinary URL as response
+    console.log("Uploaded File:", req.file); // ✅ Debugging ke liye
+
+res.send(req.file)
+});
 app.listen(3000,()=>{
     console.log("Server is running on port 3000");
 });

@@ -21,6 +21,8 @@ const session =require("express-session")
 const flash=require("connect-flash")
 const passport =require("passport")
 const LocalStrategy= require("passport-local")
+const multer = require("multer");
+const upload = multer(); 
 const User=require("./modules/user")
 
 const Port = 5000;

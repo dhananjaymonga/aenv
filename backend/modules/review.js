@@ -17,6 +17,11 @@ const reviewSchema = new Schema({
     type: Date,
     default: Date.now,
   },
+  author: {
+    type: mongoose.Schema.Types.ObjectId,  // ✅ User ID reference
+    ref: "User"  // ✅ Reference to User model
+},
+
 });
 
 module.exports = mongoose.model("Review", reviewSchema);

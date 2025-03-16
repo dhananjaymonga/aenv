@@ -5,7 +5,7 @@
         <h2 class="text-3xl font-bold text-gray-900 text-center">Create a New Listing</h2>
         <p class="text-gray-500 text-center mt-2">Fill in the details to add your place</p>
 
-        <form action="/listings" method="POST" class="mt-6 space-y-5 needs-validation" novalidate>
+        <form action="/listings" method="POST" class="mt-6 space-y-5 needs-validation" novalidate enctype="multipart/form-data">
             <div>
                 <label for="title" class="block text-gray-700 font-medium">Title</label>
                 <input type="text" id="title" name="listing[title]" required 
@@ -22,12 +22,19 @@
                 <div class="invalid-feedback text-red-500">Please enter a description.</div>
             </div>
 
-            <div>
+            <!-- <div>
                 <label for="imageUrl" class="block text-gray-700 font-medium">Image URL</label>
                 <input type="url" id="imageUrl" name="listing[image][url]" 
                     class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2">
                 <div class="valid-feedback text-green-500">Valid image URL!</div>
                 <div class="invalid-feedback text-red-500">Please provide a valid image URL.</div>
+            </div> -->
+            <div>
+                <label for="imageUrl" class="block text-gray-700 font-medium">Image URL</label>
+                <input type="file" id="imageUrl" name="listing[image][]" multiple>
+                <!-- class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2"> -->
+                <div class="valid-feedback text-green-500">Valid image !</div>
+                <div class="invalid-feedback text-red-500">Please provide a valid image .</div>
             </div>
 
             <div>
