@@ -36,10 +36,16 @@ const validateListing = (req, res, next) => {
 
       console.log("Request Body:", req.body); // Debugging
   
-      if (!req.body.listing) {
-          throw new ExpressError("Invalid Listing Data", 400);
+    //   if (!listing) {
+    //     req.flash("error", "Listing not found!");
+    //     return res.redirect("/listings");
+    // }
+      if (req.file) {
+        newListing.image = {
+          url: req.file.path,
+          filename: req.file.filename,
+        };
       }
-  
   
      
     if (!Array.isArray(newListing.amenities)) {
@@ -67,13 +73,35 @@ const validateListing = (req, res, next) => {
   
     updateListing: wrapAsync(async (req, res) => {
       const { id } = req.params;
-      if (!req.body.listing.image || !req.body.listing.image.url) {
-        req.body.listing.image = { url: "https://via.placeholder.com/300" };
+      let updatedListing = req.body.listing;
+    
+      // If no new image is uploaded, make sure the existing image is retained
+      if (req.file) {
+        // If an image is uploaded, update the image field
+        updatedListing.image = {
+          url: req.file.path,
+          filename: req.file.filename,
+        };
+      } else {
+        // If no new image is uploaded, keep the existing image URL (if available)
+        const listing = await Listing.findById(id);
+        if (listing && listing.image) {
+          updatedListing.image = listing.image; // Keep the current image if no new one is uploaded
+        }
       }
-      await Listing.findByIdAndUpdate(id, { ...req.body.listing });
+    
+      // If no image URL is specified (e.g., after form submission without an image), set a placeholder
+      if (!updatedListing.image || !updatedListing.image.url) {
+        updatedListing.image = { url: "https://via.placeholder.com/300" };
+      }
+    
+      // Update the listing with the new data
+      await Listing.findByIdAndUpdate(id, { ...updatedListing });
+      
       req.flash("success", "Listing Updated");
-      res.redirect(`/listings/${id}`);
+      res.redirect(`/listings/${id}`); // Redirect to the updated listing page
     }),
+    
   
     deleteListing: wrapAsync(async (req, res) => {
       const { id } = req.params;

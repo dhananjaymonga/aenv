@@ -22,8 +22,13 @@ const flash=require("connect-flash")
 const passport =require("passport")
 const LocalStrategy= require("passport-local")
 const multer = require("multer");
-const upload = multer(); 
+// const upload = multer(); 
 const User=require("./modules/user")
+// const multer = require("multer");
+const { upload } = require("./cloudConfig"); // ✅ Cloudinary upload config
+
+require("dotenv").config();
+
 
 const Port = 5000;
 const MONGO_URI = "mongodb://localhost:27017/adim";
@@ -55,7 +60,9 @@ app.use(express.json());
 app.use(methodOverride("_method"));
 app.use(session(sessionOption))
 app.use(flash())
-
+// console.log("Cloudinary Name:", process.env.CLOUD_NAME);
+// console.log("Cloudinary Name:", process.env.CLOUDINARY_API_KEY);
+// console.log("Cloudinary Name:", process.env.CLOUDINARY_API_SECRET);
 app.use(passport.initialize())
 app.use(passport.session())
 passport.use(new LocalStrategy(User.authenticate()));  
@@ -67,6 +74,12 @@ app.use((req,res,next)=>{
     res.locals.error = req.flash("error");
     console.log("Flash Messages in Middleware:", res.locals.success, res.locals.error);
     next();
+});
+app.use((err, req, res, next) => {
+    console.error("🔥 ERROR:", err);  // Debugging ke liye  
+    const statusCode = err.statusCode || 500;
+    const message = err.message || "Something went wrong";
+    res.status(statusCode).json({ status: "error", message, error: err.stack });
 });
 
 app.use((req, res, next) => {

@@ -1,19 +1,20 @@
 <nav class="bg-white shadow-md sticky top-0 z-50 p-4">
     <div class="container mx-auto flex justify-between items-center">
+        
         <!-- Left Side: Logo -->
-        <a href="/" class="text-red-500 text-2xl font-bold flex items-center">
+        <a href="/listings" class="text-red-500 text-2xl font-bold flex items-center">
             <i class="fa-solid fa-house-chimney mr-2"></i> Airbnb
         </a>
 
         <!-- Middle: Navigation Links -->
         <div class="hidden md:flex space-x-6">
-            <a href="/" class="text-gray-700 font-medium hover:text-red-500 transition">Home</a>
-            <a href="/listings" class="text-gray-700 font-medium hover:text-red-500 transition">All Listings</a>
-            <a href="/listings/new" class="text-gray-700 font-medium hover:text-red-500 transition">Create Listing</a>
+            <!-- <a href="/" class="text-gray-700 font-medium hover:text-red-500 transition">Home</a> -->
+            <a href="/listings" class="text-gray-700 font-medium hover:text-red-500 transition">Explore</a>
         </div>
-
+        
         <!-- Right Side: Authentication -->
         <div class="space-x-4 flex items-center">
+            <a href="/listings/new" class="text-gray-700 font-medium hover:text-red-500 transition">Create Listing</a>
             <% if (!currentUser) { %>
                 <!-- If User Not Logged In -->
                 <a href="/login" class="text-gray-700 font-medium hover:text-red-500 transition">Log in</a>

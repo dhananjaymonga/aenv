@@ -118,8 +118,7 @@ const router = express.Router();
 const listingController = require("../controllers/listingController");
 const multer =require("multer")
 const { isLoggedIn, isOwner, saveRedirectUrl } = require("../Middleware");
-// const upload =multer ({dest:"uploads/"})
-const upload = multer({ dest: "uploads/" });
+const { upload } = require("../cloudConfig"); 
 
 // router.get("/", listingController.getAllListings);
 // router.get("/new", isLoggedIn, listingController.getListingForm);
@@ -131,13 +130,13 @@ const upload = multer({ dest: "uploads/" });
 // module.exports = router;
 router.route("/")
   .get(listingController.getAllListings)
-  .post( isLoggedIn, upload.none(), listingController.createListing);
+    .post( isLoggedIn, upload.single("image"), listingController.createListing);
 
 router.get("/new", isLoggedIn, listingController.getListingForm);
 
 router.route("/:id")
   .get(listingController.getListingById)
-  .put(isLoggedIn, isOwner, listingController.updateListing)
+  .put(isLoggedIn, isOwner,upload.single("image"), listingController.updateListing)
   .delete(isLoggedIn, isOwner, listingController.deleteListing);
 
 router.get("/:id/edit", isLoggedIn, saveRedirectUrl, isOwner, listingController.getEditListingForm);

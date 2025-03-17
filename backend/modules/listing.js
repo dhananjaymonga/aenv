@@ -54,6 +54,20 @@ const ListingSchema = new mongoose.Schema({
     type:mongoose. Schema.Types.ObjectId,
     ref: 'User' 
 },
+category: {
+  type: String,
+  enum: [
+    "Amazing Pools",
+    "Farms",
+    "Icons",
+    "Amazing Views",
+    "Creative Spaces",
+    "Bed & Breakfasts",
+    "Rooms",
+    "OMG!",
+  ],
+  required: [true, "Category is required!"], // ✅ Custom error message
+},
 
 }, { timestamps: true });
 // console.log(hi)

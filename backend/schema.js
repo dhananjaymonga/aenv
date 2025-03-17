@@ -15,10 +15,21 @@ const listingSchema = Joi.object({
   price: Joi.number().min(0).required(),
   location: Joi.string().min(2).max(100).required(),
   country: Joi.string().min(2).max(100).required(),
+  category: Joi.string().valid(
+    "Amazing Pools",
+    "Farms",
+    "Icons",
+    "Amazing Views",
+    "Creative Spaces",
+    "Bed & Breakfasts",
+    "Rooms",
+    "OMG!"
+  ).required(),
   amenities: Joi.alternatives().try(
     Joi.array().items(Joi.string().min(2).max(50)), // If array, validate each item
     Joi.string().min(2).max(50) // If single string, allow it
   ).default([]),
+
 });
 
 // module.exports = { listingSchema };

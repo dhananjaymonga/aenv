@@ -31,12 +31,22 @@
             </div> -->
             <div>
                 <label for="imageUrl" class="block text-gray-700 font-medium">Image URL</label>
-                <input type="file" id="imageUrl" name="listing[image][]" multiple>
+                <input type="file" name="image" accept="image/*">
                 <!-- class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2"> -->
                 <div class="valid-feedback text-green-500">Valid image !</div>
                 <div class="invalid-feedback text-red-500">Please provide a valid image .</div>
             </div>
-
+            <label>Category:</label>
+            <select  name="listing[category]" required class="border p-2">
+                <option value="Amazing Pools">Amazing Pools</option>
+                <option value="Farms">Farms</option>
+                <option value="Icons">Icons</option>
+                <option value="Amazing Views">Amazing Views</option>
+                <option value="Creative Spaces">Creative Spaces</option>
+                <option value="Bed & Breakfasts">Bed & Breakfasts</option>
+                <option value="Rooms">Rooms</option>
+                <option value="OMG!">OMG!</option>
+            </select>
             <div>
                 <label for="price" class="block text-gray-700 font-medium">Price per Night (in ₹)</label>
                 <input type="number" id="price" name="listing[price]" required min="1"
