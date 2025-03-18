@@ -22,17 +22,10 @@
                 <div class="invalid-feedback text-red-500">Please enter a description.</div>
             </div>
 
-            <!-- <div>
-                <label for="imageUrl" class="block text-gray-700 font-medium">Image URL</label>
-                <input type="url" id="imageUrl" name="listing[image][url]" 
-                    class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2">
-                <div class="valid-feedback text-green-500">Valid image URL!</div>
-                <div class="invalid-feedback text-red-500">Please provide a valid image URL.</div>
-            </div> -->
+           
             <div>
                 <label for="imageUrl" class="block text-gray-700 font-medium">Image URL</label>
                 <input type="file" name="image" accept="image/*">
-                <!-- class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2"> -->
                 <div class="valid-feedback text-green-500">Valid image !</div>
                 <div class="invalid-feedback text-red-500">Please provide a valid image .</div>
             </div>
@@ -46,6 +39,19 @@
                 <option value="Bed & Breakfasts">Bed & Breakfasts</option>
                 <option value="Rooms">Rooms</option>
                 <option value="OMG!">OMG!</option>
+                <option value="Beachfront">Beachfront</option>
+                <option value="Cabins">Cabins</option>
+                <option value="Luxe">Luxe</option>
+                <option value="Tiny Homes">Tiny Homes</option>
+                <option value="Houseboats">Houseboats</option>
+                <option value="Camping">Camping</option>
+                <option value="Castles">Castles</option>
+                <option value="Domes">Domes</option>
+                <option value="Caves">Caves</option>
+                <option value="Ryokans">Ryokans</option>
+                <option value="Vineyards">Vineyards</option>
+                <option value="Barns">Barns</option>
+                <option value="Treehouses">Treehouses</option>
             </select>
             <div>
                 <label for="price" class="block text-gray-700 font-medium">Price per Night (in ₹)</label>
@@ -111,12 +117,12 @@
                     if (!input.checkValidity()) {
                         input.classList.add('border-red-500', 'focus:ring-red-500');
                         input.classList.remove('border-green-500', 'focus:ring-green-500');
-                        input.nextElementSibling.classList.add('d-block'); // Show invalid feedback
+                        input.nextElementSibling.classList.add('d-block');
                         isValid = false;
                     } else {
                         input.classList.add('border-green-500', 'focus:ring-green-500');
                         input.classList.remove('border-red-500', 'focus:ring-red-500');
-                        input.nextElementSibling.classList.add('d-block'); // Show valid feedback
+                        input.nextElementSibling.classList.add('d-block');
                     }
                 });
 
@@ -131,13 +137,13 @@
                     if (input.checkValidity()) {
                         input.classList.add('border-green-500', 'focus:ring-green-500');
                         input.classList.remove('border-red-500', 'focus:ring-red-500');
-                        input.nextElementSibling.classList.add('d-block'); // Show valid feedback
-                        input.nextElementSibling.nextElementSibling.classList.remove('d-block'); // Hide invalid feedback
+                        input.nextElementSibling.classList.add('d-block');
+                        input.nextElementSibling.nextElementSibling.classList.remove('d-block'); 
                     } else {
                         input.classList.add('border-red-500', 'focus:ring-red-500');
                         input.classList.remove('border-green-500', 'focus:ring-green-500');
-                        input.nextElementSibling.classList.remove('d-block'); // Hide valid feedback
-                        input.nextElementSibling.nextElementSibling.classList.add('d-block'); // Show invalid feedback
+                        input.nextElementSibling.classList.remove('d-block'); 
+                        input.nextElementSibling.nextElementSibling.classList.add('d-block'); 
                     }
                 });
             });
@@ -145,118 +151,4 @@
     </script>
 </body>
 
-
-<!-- <body>
-    <div class="w-full mx-auto bg-white shadow-lg rounded-2xl p-6 mt-10">
-        <h2 class="text-3xl font-bold text-gray-900 text-center">Create a New Listing</h2>
-        <p class="text-gray-500 text-center mt-2">Fill in the details to add your place</p>
-
-        <form action="/listings" method="POST" class="mt-6 space-y-5 needs-validation" novalidate>
-            <div>
-                <label for="title" class="block text-gray-700 font-medium">Title</label>
-                <input type="text" id="title" name="listing[title]" required class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2">
-                <div class="invalid-feedback text-red-500">Please enter a title.</div>
-            </div>
-
-            <div>
-                <label for="description" class="block text-gray-700 font-medium">Description</label>
-                <textarea id="description" name="listing[description]" required rows="3"
-                    class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2"></textarea>
-                <div class="invalid-feedback text-red-500">Please enter a description.</div>
-            </div>
-
-            <div>
-                <label for="imageUrl" class="block text-gray-700 font-medium">Image URL</label>
-                <input type="url" id="imageUrl" name="listing[image][url]" class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2">
-                <div class="invalid-feedback text-red-500">Please provide a valid image URL.</div>
-            </div>
-
-            <div>
-                <label for="price" class="block text-gray-700 font-medium">Price per Night (in ₹)</label>
-                <input type="number" id="price" name="listing[price]" required min="1"
-                    class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2">
-                <div class="invalid-feedback text-red-500">Please enter a valid price.</div>
-            </div>
-
-            <div>
-                <label for="country" class="block text-gray-700 font-medium">Country</label>
-                <input type="text" id="country" name="listing[country]" required
-                    class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2">
-                <div class="invalid-feedback text-red-500">Please enter a country.</div>
-            </div>
-
-            <div>
-                <label for="location" class="block text-gray-700 font-medium">Location</label>
-                <input type="text" id="location" name="listing[location]" required
-                    class="w-full p-3 border rounded-lg focus:outline-none focus:ring-2">
-                <div class="invalid-feedback text-red-500">Please enter a location.</div>
-            </div>
-
-            <div>
-                <label class="block text-gray-700 font-medium mb-2">Amenities</label>
-                <div class="flex flex-wrap gap-3">
-                    <label class="flex items-center">
-                        <input type="checkbox" name="listing[amenities]" value="WiFi" class="mr-2"> WiFi
-                    </label>
-                    <label class="flex items-center">
-                        <input type="checkbox" name="listing[amenities]" value="Kitchen" class="mr-2"> Kitchen
-                    </label>
-                    <label class="flex items-center">
-                        <input type="checkbox" name="listing[amenities]" value="Parking" class="mr-2"> Free Parking
-                    </label>
-                    <label class="flex items-center">
-                        <input type="checkbox" name="listing[amenities]" value="Pool" class="mr-2"> Swimming Pool
-                    </label>
-                </div>
-            </div>
-
-            <div>
-                <button type="submit"
-                    class="w-full bg-red-500 text-white py-3 px-6 rounded-lg text-lg font-semibold hover:bg-red-600 transition">
-                    Add Listing
-                </button>
-            </div>
-        </form>
-    </div>
-
-    <script>
-        (function () {
-            'use strict';
-            var form = document.querySelector('.needs-validation');
-            var inputs = form.querySelectorAll('input, textarea');
-
-            form.addEventListener('submit', function (event) {
-                var isValid = true;
-
-                inputs.forEach(function (input) {
-                    if (!input.checkValidity()) {
-                        input.classList.add('border-red-500', 'focus:ring-red-500');
-                        input.classList.remove('border-green-500', 'focus:ring-green-500');
-                        isValid = false;
-                    } else {
-                        input.classList.add('border-green-500', 'focus:ring-green-500');
-                        input.classList.remove('border-red-500', 'focus:ring-red-500');
-                    }
-                });
-
-                if (!isValid) {
-                    event.preventDefault();
-                    event.stopPropagation();
-                }
-            });
-
-            inputs.forEach(function (input) {
-                input.addEventListener('input', function () {
-                    if (input.checkValidity()) {
-                        input.classList.add('border-green-500', 'focus:ring-green-500');
-                        input.classList.remove('border-red-500', 'focus:ring-red-500');
-                    } else {
-                        input.classList.add('border-red-500', 'focus:ring-red-500');
-                        input.classList.remove('border-green-500', 'focus:ring-green-500');
-                    }
-                });
-            });
-        })();
-    </script>
-</body> -->
 

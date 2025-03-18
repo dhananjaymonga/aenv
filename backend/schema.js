@@ -7,11 +7,11 @@ const listingSchema = Joi.object({
   image: Joi.object({
     url: Joi.string()
       .uri()
-      .allow("") // ✅ Allow empty string to avoid validation error
+      .allow("")
       .default("https://images.unsplash.com/photo-1501785888041-af3ef285b470?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fHRyYXZlbHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60"), // ✅ Default image URL
   }).default({ 
     url: "https://images.unsplash.com/photo-1501785888041-af3ef285b470?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxzZWFyY2h8MTh8fHRyYXZlbHxlbnwwfHwwfHx8MA%3D%3D&auto=format&fit=crop&w=800&q=60"
-  }), // ✅ Ensure `image` object exists
+  }), 
   price: Joi.number().min(0).required(),
   location: Joi.string().min(2).max(100).required(),
   country: Joi.string().min(2).max(100).required(),
@@ -23,7 +23,20 @@ const listingSchema = Joi.object({
     "Creative Spaces",
     "Bed & Breakfasts",
     "Rooms",
-    "OMG!"
+    "OMG!",
+    "Beachfront",
+    "Cabins",
+    "Luxe",
+    "Tiny Homes",
+    "Houseboats",
+    "Camping",
+    "Castles",
+    "Domes",
+    "Caves",
+    "Ryokans",
+    "Vineyards",
+    "Barns",
+    "Treehouses"
   ).required(),
   amenities: Joi.alternatives().try(
     Joi.array().items(Joi.string().min(2).max(50)), // If array, validate each item
@@ -32,7 +45,6 @@ const listingSchema = Joi.object({
 
 });
 
-// module.exports = { listingSchema };
 
 
 

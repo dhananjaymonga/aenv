@@ -18,6 +18,7 @@ const { reviewSchema } = require("./schema");
 const Listing = require("./modules/listing");
 const Review = require("./modules/review");
 const session =require("express-session")
+const MongoStore= require("connect-mongo")
 const flash=require("connect-flash")
 const passport =require("passport")
 const LocalStrategy= require("passport-local")
@@ -26,22 +27,38 @@ const multer = require("multer");
 const User=require("./modules/user")
 // const multer = require("multer");
 const { upload } = require("./cloudConfig"); // ✅ Cloudinary upload config
+const { error } = require("console");
 
 require("dotenv").config();
 
 
 const Port = 5000;
-const MONGO_URI = "mongodb://localhost:27017/adim";
+const dbURL = process.env.MONGO_URI;
+console.log(dbURL)
+console.log(process.env. Secret);
 
 
 // Mongoose connection
-mongoose.connect(MONGO_URI)
-  .then(() => console.log("Connected to MongoDB"))
-  .catch(err => console.log(err));
+mongoose.connect(dbURL)
+.then(() => console.log("Connected to MongoDB"))
+.catch(err => console.log(err));
 
+console.log(process.env. Secret);
+  const store=    MongoStore.create({
+    mongoUrl:dbURL,
+    crypto:{
+        secret:process.env. Secret,
+    },
+    touchAfter:24*36,
+
+})
+store.on("error",()=>{
+    console.log("ERROR IN MONGO Session Store",error)
+})
 
   const sessionOption={
-    secret:"mysupersecret",
+    store,
+    secret:process.env. Secret,
     resave:false,
     saveUninitialized:true,
     cookie:{
@@ -50,6 +67,7 @@ mongoose.connect(MONGO_URI)
         httpOnly:true,
     },
 }
+
 // Middleware
 app.set("view engine", "ejs");
 app.engine("ejs", engine);
@@ -76,7 +94,7 @@ app.use((req,res,next)=>{
     next();
 });
 app.use((err, req, res, next) => {
-    console.error("🔥 ERROR:", err);  // Debugging ke liye  
+    console.error("🔥 ERROR:", err);   
     const statusCode = err.statusCode || 500;
     const message = err.message || "Something went wrong";
     res.status(statusCode).json({ status: "error", message, error: err.stack });
@@ -89,7 +107,8 @@ app.use((req, res, next) => {
 
 // Routes
 app.get("/", wrapAsync(async (req, res) => {
-    res.send("hii");
+    // res.send("hii");
+    res.render("listings/try.ejs")
 }));
 
 app.use("/listings", listingRoutes);

@@ -1,15 +1,6 @@
-// module.exports. isLoggedIn=(req,res,next)=>{
-//     // console.log(req.user)
 
-// if(!req.isAuthenticated()){
-//     req.flash("error","you must be logged  in to create listing ")
-//      return res.redirect("/login")
-//         }
-//         next()
-//     }
 const Listing = require("./modules/listing");
 const Review = require("./modules/review");
-// const ExpressError =require("./utils/ExpressError")
 
 module.exports.isOwner = async (req, res, next) => {
     const { id } = req.params;
@@ -25,10 +16,10 @@ module.exports.isOwner = async (req, res, next) => {
         return res.redirect(`/listings/${id}`);
     }
 
-    next(); // If owner, continue to the route
+    next(); // 
 };
     module.exports.isLoggedIn = (req, res, next) => {
-        console.log("Current User Session:", req.user); // ✅ Debugging ke liye
+        console.log("Current User Session:", req.user); 
         if (!req.isAuthenticated()) {
             req.session.redirectUrl=req.originalUrl
             req.flash("error", "You must be logged in to access this page!");
@@ -57,7 +48,7 @@ module.exports.isOwner = async (req, res, next) => {
             return res.redirect(`/listings/${id}`);
         }
     
-        next(); // If owner, continue to the route
+        next(); 
     };
     
    
@@ -75,7 +66,7 @@ module.exports.isOwner = async (req, res, next) => {
             return res.redirect("back");
         }
     
-        next(); // If author, continue to the route
+        next(); 
     };
     module.exports.saveRedirectUrl = (req, res, next) => {
         console.log("🔍 Checking session before saving redirect URL:", req.session);

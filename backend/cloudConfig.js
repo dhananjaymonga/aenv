@@ -15,7 +15,7 @@ console.log("Cloudinary Name:", process.env.CLOUDINARY_API_SECRET);
 const storage = new CloudinaryStorage({
   cloudinary,
   params: {
-    folder: "listings", // Change to your desired folder name
+    folder: "listings", //  folder name
     allowed_formats: ["jpeg", "png", "jpg"],
   },
 });

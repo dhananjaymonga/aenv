@@ -3,12 +3,13 @@
 <body class="bg-gray-100">
     <div class="container mx-auto p-6 animate-fadeIn">
         <div class="grid grid-cols-1 md:grid-cols-2 gap-6">
-           <div class="relative group overflow-hidden rounded-lg shadow-lg">
+            <div class="relative group overflow-hidden rounded-lg shadow-lg">
                 <img src="<%= listing.image.url %>" alt="<%= listing.title %>" class="w-full h-96 object-cover transition-transform duration-300 group-hover:scale-105">
                 <div class="absolute inset-0 bg-black bg-opacity-50 flex items-center justify-center opacity-0 group-hover:opacity-100 transition">
                     <span class="text-white text-xl font-semibold">View Full Image</span>
                 </div>
             </div>
+
 
             <div>
                 <h1 class="text-3xl font-bold text-gray-800 mb-2"><%= listing.title %></h1>
@@ -40,11 +41,13 @@
                     </div>
                 </div>
                 <div class="mt-6">
-                    <h3 class="text-lg font-semibold text-gray-700 mb-2">Category:</h3>
+                    <h3 class="text-lg font-semibold text-gray-700 mb-2">Category:  <span class="px-4 py-2  text-black  text-sm font-medium">
+                        <%= listing.category %>
+                    </span></h3>
                     <div class="flex space-x-3 overflow-x-auto p-2">
-                        <span class="px-4 py-2 bg-blue-500 text-white rounded-full text-sm font-medium">
-                            <%= listing.category %>
-                        </span>
+                       
+
+                        <!-- console.log(object); -->
                     </div>
                 </div>
             
