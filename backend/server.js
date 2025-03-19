@@ -30,6 +30,7 @@ const { upload } = require("./cloudConfig"); // ✅ Cloudinary upload config
 const { error } = require("console");
 
 require("dotenv").config();
+require("./googleconfig"); // Make sure Passport is required
 
 
 const Port = 5000;
@@ -37,7 +38,8 @@ const dbURL = process.env.MONGO_URI;
 console.log(dbURL)
 console.log(process.env. Secret);
 
-
+console.log(process.env.GOOGLE_CLIENT_ID);
+console.log(process.env.GOOGLE_CLIENT_SECRET);
 // Mongoose connection
 mongoose.connect(dbURL)
 .then(() => console.log("Connected to MongoDB"))
@@ -99,6 +101,18 @@ app.use((err, req, res, next) => {
     const message = err.message || "Something went wrong";
     res.status(statusCode).json({ status: "error", message, error: err.stack });
 });
+// passport.serializeUser((user, done) => {
+//     done(null, user.id);
+//   });
+  
+//   passport.deserializeUser(async (id, done) => {
+//     try {
+//       const user = await User.findById(id);
+//       done(null, user);
+//     } catch (error) {
+//       done(error, null);
+//     }
+//   });
 
 app.use((req, res, next) => {
     res.locals.currentUser = req.user;
@@ -110,6 +124,7 @@ app.get("/", wrapAsync(async (req, res) => {
     // res.send("hii");
     res.render("listings/try.ejs")
 }));
+
 
 app.use("/listings", listingRoutes);
 app.use("/listings/:id/reviews", reviewRoutes);
