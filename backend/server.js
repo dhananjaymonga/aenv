@@ -88,6 +88,18 @@ app.use(passport.session())
 passport.use(new LocalStrategy(User.authenticate()));  
 passport.serializeUser(User.serializeUser());
 passport.deserializeUser(User.deserializeUser());
+app.use((req, res, next) => {
+    const excludedPaths = ["/login", "/signup", "/auth/google", "/auth/google/callback"];
+  
+    if (!req.isAuthenticated() && !excludedPaths.includes(req.path)) {
+      req.session.redirectUrl = req.originalUrl;
+      console.log("🔄 Storing Redirect URL:", req.session.redirectUrl);
+    } else {
+      delete req.session.redirectUrl;
+    }
+    next();
+  });
+  
 app.use((req,res,next)=>{
     res.locals.currentUser = req.user || null;  
     res.locals.success = req.flash("success");  
@@ -95,29 +107,90 @@ app.use((req,res,next)=>{
     console.log("Flash Messages in Middleware:", res.locals.success, res.locals.error);
     next();
 });
+
+const GoogleStrategy = require("passport-google-oauth20").Strategy;
+
+passport.use(
+    new GoogleStrategy(
+      {
+        clientID: process.env.GOOGLE_CLIENT_ID,
+        clientSecret: process.env.GOOGLE_CLIENT_SECRET,
+        callbackURL: "http://localhost:5000/auth/google/callback",
+      },
+      async (accessToken, refreshToken, profile, done) => {
+        try {
+          let user = await User.findOne({ googleId: profile.id });
+          if (!user) {
+            user = new User({
+              googleId: profile.id,
+              username: profile.displayName,
+              email: profile.emails[0].value,
+            });
+            await user.save();
+          }
+          return done(null, user);
+        } catch (err) {
+          return done(err, null);
+        }
+      }
+    )
+  );
+
+passport.serializeUser((user, done) => {
+  done(null, user.id);
+});
+
+passport.deserializeUser(async (id, done) => {
+  try {
+    const user = await User.findById(id);
+    done(null, user);
+  } catch (err) {
+    done(err, null);
+  }
+});
+
 app.use((err, req, res, next) => {
     console.error("🔥 ERROR:", err);   
     const statusCode = err.statusCode || 500;
     const message = err.message || "Something went wrong";
     res.status(statusCode).json({ status: "error", message, error: err.stack });
 });
-// passport.serializeUser((user, done) => {
-//     done(null, user.id);
-//   });
+passport.serializeUser((user, done) => {
+    done(null, user.id);
+  });
   
-//   passport.deserializeUser(async (id, done) => {
-//     try {
-//       const user = await User.findById(id);
-//       done(null, user);
-//     } catch (error) {
-//       done(error, null);
-//     }
-//   });
+  passport.deserializeUser(async (id, done) => {
+    try {
+      const user = await User.findById(id);
+      done(null, user);
+    } catch (err) {
+      done(err, null);
+    }
+  });
 
-app.use((req, res, next) => {
-    res.locals.currentUser = req.user;
-    next();
-});
+  app.get("/auth/google/callback", 
+    passport.authenticate("google", { failureRedirect: "/login" }),
+    (req, res) => {
+      console.log("✅ Google Login Successful!");
+      console.log("🔍 Stored Redirect URL:", req.session.redirectUrl);
+      
+      let redirectUrl = req.session.redirectUrl || "/listings"; // ✅ Default fallback
+      delete req.session.redirectUrl;
+      
+      console.log("🚀 Redirecting to:", redirectUrl);
+      res.redirect(redirectUrl);
+    }
+  );
+  app.get("/auth/facebook", (req, res) => {
+    res.send("Facebook OAuth in progress...");
+  });
+  
+    
+
+// app.use((req, res, next) => {
+//     res.locals.currentUser = req.user;
+//     next();
+// });
 
 // Routes
 app.get("/", wrapAsync(async (req, res) => {
@@ -130,14 +203,14 @@ app.use("/listings", listingRoutes);
 app.use("/listings/:id/reviews", reviewRoutes);
 app.use("/",UserRouter)
 
-app.get("/gndhruser", async (req,res)=>{
-    let fakeuser= new User({
-        email:"student@gmail.com",
-        username:"dhan"
-    })
-    let registeruser=await User.register(fakeuser,"helloworld")
-    res.send(registeruser)
-})
+// app.get("/gndhruser", async (req,res)=>{
+//     let fakeuser= new User({
+//         email:"student@gmail.com",
+//         username:"dhan"
+//     })
+//     let registeruser=await User.register(fakeuser,"helloworld")
+//     res.send(registeruser)
+// })
 
 // 404 Not Found
 app.use((req, res) => {

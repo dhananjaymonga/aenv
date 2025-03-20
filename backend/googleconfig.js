@@ -1,3 +1,4 @@
+const mongoose = require("mongoose");
 const passport = require("passport");
 const GoogleStrategy = require("passport-google-oauth20").Strategy;
 const User = require("./modules/user"); // Ensure this path is correct
@@ -32,17 +33,30 @@ passport.use(
     }
   )
 );
-passport.serializeUser((user, done) => {
-    console.log("🔹 Serializing User:", user.id);
-    done(null, user.id);
-  });
+// passport.serializeUser((user, done) => {
+//   if (!user.id) {
+//       console.error("❌ Missing User ID:", user);
+//       return done(new Error("Missing User ID"), null);
+//   }
+//   console.log("🔹 Serializing User:", user.id);
+//   done(null, user.id);
+// });
+
   
-  passport.deserializeUser(async (id, done) => {
-    try {
-      const user = await User.findById(id);
-      console.log("🔹 Deserializing User:", user);
-      done(null, user);
-    } catch (error) {
-      done(error, null);
-    }
-  });
+
+  // passport.deserializeUser(async (id, done) => {
+  //   try {
+  //     if (!mongoose.Types.ObjectId.isValid(id)) {
+  //       console.error("❌ Invalid User ID:", id);
+  //       return done(new Error("Invalid User ID"), null);
+  //     }
+  
+  //     const user = await User.findById(id);
+  //     console.log("🔹 Deserializing User:", user);
+      
+  //     done(null, user);
+  //   } catch (error) {
+  //     done(error, null);
+  //   }
+  // });
+  

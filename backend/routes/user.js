@@ -101,37 +101,18 @@ router.route("/login")
   .get(saveRedirectUrl, authController.renderLogin)
   .post(authController.login);
 
-  router.get(
-    "/google",
-    passport.authenticate("google", { scope: ["profile", "email"] })
-  );
-  
-  // Google Callback Route
-  router.get(
-    "/google/callback",
-    passport.authenticate("google", { failureRedirect: "/" }),
-    (req, res) => {
-      console.log("🔹 Google Callback Query Params:", req.query); // Check query params
-
-      console.log("✅ Google Callback Hit!"); // Check if callback is hit
-      console.log("🔹 Authenticated User:", req.user); // Debugging
-  
-      if (!req.user) {
-        console.error("❌ No user found after authentication");
-        return res.redirect("/");
-      }
-  
-      // res.redirect("/listings"); // Redirect after login
-      res.send("hii")
-    }
-  );
+ 
   
   router.get("/logout", (req, res) => {
     req.logout(() => {
-      res.redirect("/");
+      res.redirect("/listings");
     });
   });
 router.get("/logout", authController.logout);
 
-module.exports = router;
+router.get(
+  "/google",
+  passport.authenticate("google", { scope: ["profile", "email"] })
+);router.get("/google/callback", passport.authenticate("google", { failureRedirect: "/" }), authController.googleRedirect);
+
 module.exports = router;

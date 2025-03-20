@@ -37,15 +37,21 @@ module.exports = {
         req.flash("error", "Invalid email or password!");
         return res.redirect("/login");
       }
+  
       req.logIn(user, (err) => {
         if (err) return next(err);
         req.flash("success", "Welcome back!");
+  
         let redirectUrl = req.session.redirectUrl || "/listings";
-        delete req.session.redirectUrl;
+        if (redirectUrl === "/login") redirectUrl = "/listings"; // ✅ Fix loop issue
+  
+        delete req.session.redirectUrl; // ✅ Clear after login
+        console.log("✅ Redirecting to:", redirectUrl);
         return res.redirect(redirectUrl);
       });
     })(req, res, next);
   },
+  
 
   logout: (req, res, next) => {
     req.logOut((err) => {
@@ -54,4 +60,27 @@ module.exports = {
       res.redirect("/listings");
     });
   },
+  googleRedirect: (req, res) => {
+    if (!req.user) {
+      req.flash("error", "Authentication failed!");
+      return res.redirect("/login");
+    }
+  
+    req.flash("success", "Logged in successfully via Google!");
+  
+    let redirectUrl = req.session.redirectUrl || "/listings";
+    
+    // 🔥 Google Auth Redirect Fix: Agar invalid URL hai toh default do
+    if (redirectUrl.includes("/auth/google")) {
+      redirectUrl = "/listings";
+    }
+  
+    delete req.session.redirectUrl;
+    console.log("✅ Google Redirecting to:", redirectUrl);
+    res.redirect(redirectUrl);
+  },
+  
+  
+  
+  
 };
