@@ -1,16 +1,23 @@
 <nav class="bg-white shadow-md sticky top-0 z-50 p-4">
     <div class="container mx-auto flex justify-between items-center">
         
+        <!-- Left Side: Logo -->
         <a href="/listings" class="text-red-500 text-2xl font-bold flex items-center">
             <i class="fa-solid fa-house-chimney mr-2"></i> Airbnb
         </a>
 
+        <!-- Mobile Menu Button -->
+        <button id="menu-toggle" class="md:hidden text-gray-700 focus:outline-none">
+            <i class="fa-solid fa-bars text-2xl"></i>
+        </button>
+
+        <!-- Center Menu (Hidden on Mobile) -->
         <div class="hidden md:flex space-x-6">
             <a href="/listings" class="text-gray-700 font-medium hover:text-red-500 transition">Explore</a>
         </div>
         
         <!-- Right Side: Authentication -->
-        <div class="space-x-4 flex items-center">
+        <div class="hidden md:flex space-x-4 items-center">
             <a href="/listings/new" class="text-gray-700 font-medium hover:text-red-500 transition">Create Listing</a>
             <% if (!currentUser) { %>
                 <a href="/login" class="text-gray-700 font-medium hover:text-red-500 transition">Log in</a>
@@ -21,6 +28,25 @@
             <% } %>
         </div>
     </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobile-menu" class="hidden  flex inline-block
+    space-y-4 bg-white shadow-md p-4 md:hidden">
+        <a href="/listings" class="text-gray-700 font-medium hover:text-red-500 transition">Explore</a>
+        <a href="/listings/new" class="text-gray-700 font-medium hover:text-red-500 transition">Create Listing</a>
+        <% if (!currentUser) { %>
+            <a href="/login" class="text-gray-700 font-medium hover:text-red-500 transition">Log in</a>
+            <a href="/signup" class="bg-red-500 text-white px-4 py-2 rounded-lg hover:bg-red-600 transition">Sign up</a>
+        <% } else { %>
+            <span class="text-gray-700 font-medium">Welcome, <%= currentUser.username %>!</span>
+            <a href="/logout" class="bg-gray-700 text-white px-4 py-2 rounded-lg hover:bg-gray-800 transition">Log out</a>
+        <% } %>
+    </div>
 </nav>
-<script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js"></script>
-  
+
+<!-- JavaScript for Menu Toggle -->
+<script>
+    document.getElementById("menu-toggle").addEventListener("click", function () {
+        document.getElementById("mobile-menu").classList.toggle("hidden");
+    });
+</script>

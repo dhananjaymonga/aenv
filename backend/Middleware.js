@@ -1,5 +1,5 @@
 
-const Listing = require("./modules/listing");
+const Listing = require("listing");
 const Review = require("./modules/review");
 
 module.exports.isOwner = async (req, res, next) => {

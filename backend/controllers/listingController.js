@@ -1,4 +1,4 @@
-const Listing = require("../modules/listing");
+const Listing = require("listing");
 const { listingSchema } = require("../schema");
 const wrapAsync = require("../utils/WrapAsync");
 const ExpressError = require("../utils/ExpressError");

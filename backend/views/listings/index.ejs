@@ -1,20 +1,11 @@
-
 <%layout("/layouts/boilerplate")%>
 
 <body>
-   
-    <div class="container mx-auto px-4 mt-6 ">
-        <%- include('../includes/pannel') %>  
-        <!-- <div class="mb-4">
-            <label for="propertyType" class="block text-sm font-medium text-gray-700">Property Type</label>
-            <select id="propertyType" class="mt-1 block w-full pl-3 pr-10 py-2 text-base border-gray-300 focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm rounded-md">
-                <option value="">All</option>
-                <option value="amazing-pools">Amazing Pools</option>
-                <option value="farms">Farms</option>
-                <option value="beach">Beach</option>
-            </select>
-        </div> -->
-        <div class="relative w-full b">
+    <div class="container mx-auto px-4 mt-6">
+        <%- include('../includes/pannel') %>
+
+        <!-- Category Filter -->
+        <div class="relative w-full">
             <div class="flex items-center justify-end space-x-2 mb-4">
                 <span class="text-sm text-gray-600">Display total before taxes</span>
                 <label class="relative inline-flex items-center cursor-pointer">
@@ -27,133 +18,115 @@
                     </div>
                 </label>
             </div>
+
             <!-- Left Arrow -->
             <button id="leftBtn" class="absolute left-0 top-1/2 transform -translate-y-1/2 bg-white p-2 shadow-lg rounded-full z-10">
                 <i data-lucide="chevron-left"></i>
             </button>
-    
+
             <div id="scrollContainer" class="flex gap-4 overflow-x-auto no-scrollbar scroll-smooth px-12">
                 <% let categories = [
-                     { name: "Amazing Pools", icon: "waves", type: "amazing-pools" },
-  { name: "Farms", icon: "tractor", type: "farms" },
-  { name: "Beach", icon: "umbrella", type: "beach" },
-  { name: "Treehouses", icon: "tree", type: "treehouses" },
-  { name: "Historical Homes", icon: "landmark", type: "historical-homes" },
-  { name: "OMG!", icon: "zap", type: "omg" },
-  { name: "Cabins", icon: "home", type: "cabins" },
-  { name: "Camping", icon: "tent", type: "camping" },
-  { name: "Lakefront", icon: "water", type: "lakefront" },
-  { name: "Tiny Homes", icon: "box", type: "tiny-homes" },
-  { name: "Design", icon: "layout", type: "design" },
-  { name: "Arctic", icon: "snowflake", type: "arctic" },
-  { name: "Islands", icon: "island", type: "islands" },
-  { name: "Caves", icon: "mountain", type: "caves" },
-  { name: "Desert", icon: "sun", type: "desert" },
-  { name: "Vineyards", icon: "grape", type: "vineyards" },
-  { name: "Windmills", icon: "wind", type: "windmills" },
-  { name: "Ryokans", icon: "japanese-castle", type: "ryokans" },
-  { name: "Domes", icon: "globe", type: "domes" },
-  { name: "Towers", icon: "building", type: "towers" },
-  { name: "Barns", icon: "barn", type: "barns" },
-  { name: "Lofts", icon: "apartment", type: "lofts" },
-  { name: "Earth Homes", icon: "leaf", type: "earth-homes" },
-  { name: "Houseboats", icon: "anchor", type: "houseboats" },
-  { name: "Luxury", icon: "crown", type: "luxury" },
-  { name: "New", icon: "star", type: "new" },
+{ name: "All", icon: "list", type: "all" },
+    { name: "Farms", icon: "tractor", type: "farms" },
+    { name: "Beach", icon: "umbrella", type: "beach" },
+    { name: "City", icon: "city", type: "city" },
+    { name: "Mountain", icon: "mountains", type: "mountain" },
+    { name: "Nature", icon: "tree", type: "nature" },
+    { name: "Lake", icon: "water", type: "lake" },
+    { name: "Ski", icon: "skier", type: "ski" },
+    { name: "Island", icon: "island", type: "island" }, // Updated name
+    { name: "Historic", icon: "landmark", type: "historic" },
+    { name: "Desert", icon: "sun", type: "desert" },
+    { name: "Cabins", icon: "home", type: "cabins" },
+    { name: "Camping", icon: "tent", type: "camping" },
+    { name: "Lakefront", icon: "water", type: "lakefront" },
+    { name: "Arctic", icon: "snowflake", type: "arctic" },
+    { name: "Caves", icon: "mountain", type: "caves" },
+    { name: "Vineyards", icon: "grape", type: "vineyards" },
+    { name: "Windmills", icon: "wind", type: "windmills" },
+    { name: "Ryokans", icon: "japanese-castle", type: "ryokans" },
+    { name: "Towers", icon: "building", type: "towers" },
+    { name: "Barns", icon: "barn", type: "barns" },
+    { name: "Lofts", icon: "apartment", type: "lofts" },
+    { name: "Earth Homes", icon: "leaf", type: "earth-homes" },
+    { name: "Houseboats", icon: "anchor", type: "houseboats" },
+    { name: "Luxury", icon: "crown", type: "luxury" },
+    { name: "New", icon: "star", type: "new" },
+  
                 ]; %>
-                
+
                 <% categories.forEach(category => { %>
-                    <div class="category-item min-w-[120px] flex flex-col items-center justify-center p-4 bg-white rounded-lg shadow-md border cursor-pointer hover:shadow-lg">
+                    <div class="category-item min-w-[120px] flex flex-col items-center justify-center p-4 bg-white rounded-lg shadow-md border cursor-pointer hover:shadow-lg" data-type="<%= category.type %>">
                         <i data-lucide="<%= category.icon %>" class="text-gray-700 mb-2" style="width: 32px; height: 32px;"></i>
                         <p class="text-sm font-medium"><%= category.name %></p>
                     </div>
                 <% }) %>
             </div>
-    
+
             <!-- Right Arrow -->
             <button id="rightBtn" class="absolute right-0 top-1/2 transform -translate-y-1/2 bg-white p-2 shadow-lg rounded-full z-10">
                 <i data-lucide="chevron-right"></i>
             </button>
         </div>
-        <div class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6">
 
-            
+        <!-- Listings Section -->
+        <div id="listingsContainer" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-6 mt-6">
             <% allListings.forEach(listing => { %>
-                <div class="relative bg-white shadow-lg rounded-2xl overflow-hidden transition-transform transform hover:scale-105 mt-9">
-                    
-                    <!-- Image Section with Overlay -->
+                <div class="listing-card relative bg-white shadow-lg rounded-2xl overflow-hidden transition-transform transform hover:scale-105 mt-9" data-type="<%= listing.category %>">
                     <div class="relative">
                         <img src="<%= listing.image.url %>" alt="<%= listing.title %>" class="w-full h-60 object-cover">
                         <div class="absolute inset-0 bg-black bg-opacity-10 hover:bg-opacity-50 transition duration-300"></div>
                     </div>
-    
-                    <!-- Content Section -->
                     <div class="p-4">
                         <h3 class="text-lg font-semibold"><%= listing.title %></h3>
                         <p class="text-gray-600 text-sm mt-2"><%= listing.description.substring(0, 80) %>...</p>
-                        <!-- <p class="text-gray-800 font-bold mt-2">  ₹<%= listing.price %>/night</p> -->
                         <p class="text-gray-800 font-bold mt-2 listing-price" data-original-price="<%= listing.price %>">
                             ₹<%= listing.price %>/night
                         </p>
-                        <!-- View Listing Button -->
                         <a href="/listings/<%= listing._id %>" class="mt-3 inline-block bg-red-500 text-white px-4 py-2 rounded-lg text-sm hover:bg-red-600 transition">
                             View Listing
                         </a>
                     </div>
                 </div>
             <% }) %>
-        
+        </div>
+    </div>
+
+    <!-- JavaScript -->
+    <script>
+      document.addEventListener("DOMContentLoaded", function () {
+    lucide.createIcons(); // ✅ Initialize Lucide Icons
+
+    const categories = document.querySelectorAll(".category-item");
+    const listingsContainer = document.getElementById("listingsContainer");
+    const allListings = Array.from(document.querySelectorAll(".listing-card")); // Store original listings
+
     
-    
-    
-    
-        <form  action="/listings/new" method="get">
-            <button> Create New Listing</button>
+    categories.forEach(category => {
+        category.addEventListener("click", function () {
+            const selectedType = this.getAttribute("data-type").toLowerCase();
+            console.log("🔍 Selected Category:", selectedType);
 
-        </form>
-       
-<script>
-     document.addEventListener("DOMContentLoaded", function () {
-            lucide.createIcons(); // Initialize Lucide Icons
+            // Clear previous listings
+            listingsContainer.innerHTML = "";
 
-            const scrollContainer = document.getElementById("scrollContainer");
-            const categories = document.querySelectorAll(".category-item");
-            const filters = {
-                price: document.getElementById("priceRange"),
-                guests: document.getElementById("guests"),
-                type: document.getElementById("propertyType"),
-                amenities: document.getElementById("amenities"),
-            };
-
-            let currentIndex = 0;
-
-            function scrollToCategory(index) {
-                if (index >= 0 && index < categories.length) {
-                    categories[index].scrollIntoView({ behavior: "smooth", block: "nearest", inline: "center" });
-                    currentIndex = index;
-                }
-            }
-
-            document.getElementById("leftBtn").addEventListener("click", () => scrollToCategory(currentIndex - 1));
-            document.getElementById("rightBtn").addEventListener("click", () => scrollToCategory(currentIndex + 1));
-
-            // Apply Filters
-            Object.values(filters).forEach(filter => {
-                filter.addEventListener("change", function() {
-                    console.log("Filter changed:", {
-                        price: filters.price.value,
-                        guests: filters.guests.value,
-                        type: filters.type.value,
-                        amenities: filters.amenities.value
-                    });
-                });
+            let filteredListings = allListings.filter(listing => {
+                const listingType = listing.getAttribute("data-type").toLowerCase();
+                return selectedType === "all" || listingType === selectedType;
             });
-        });
-        document.addEventListener("DOMContentLoaded", function () {
-    const toggleTaxes = document.getElementById("toggleTaxes");
-    const priceElements = document.querySelectorAll(".listing-price"); // Ensure all prices have this class
 
-    // Store original prices
+            if (filteredListings.length > 0) {
+                filteredListings.forEach(listing => listingsContainer.appendChild(listing));
+            } else {
+                listingsContainer.innerHTML = "<p class='text-center text-gray-500 text-lg col-span-full'>No listings found for this category.</p>";
+            }
+        });
+    });
+
+    // Tax Toggle
+    const toggleTaxes = document.getElementById("toggleTaxes");
+    const priceElements = document.querySelectorAll(".listing-price");
+
     const originalPrices = Array.from(priceElements).map(el => parseFloat(el.dataset.originalPrice));
 
     toggleTaxes.addEventListener("change", function () {
@@ -164,6 +137,7 @@
         });
     });
 });
-</script>
+
+    </script>
 </body>
 </html>

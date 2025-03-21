@@ -15,7 +15,7 @@ const wrapAsync = require("./utils/WrapAsync");
 const expressError = require("./utils/ExpressError");
 const { reviewSchema } = require("./schema");
 
-const Listing = require("./modules/listing");
+const Listing = require("listing");
 const Review = require("./modules/review");
 const session =require("express-session")
 const MongoStore= require("connect-mongo")
@@ -31,6 +31,7 @@ const { error } = require("console");
 
 require("dotenv").config();
 require("./googleconfig"); // Make sure Passport is required
+const FacebookStrategy = require("passport-facebook").Strategy;  // ✅ Correct Import
 
 
 const Port = 5000;
@@ -54,9 +55,9 @@ console.log(process.env. Secret);
     touchAfter:24*36,
 
 })
-store.on("error",()=>{
-    console.log("ERROR IN MONGO Session Store",error)
-})
+store.on("error", (err) => {
+  console.log("ERROR IN MONGO Session Store", err);
+});
 
   const sessionOption={
     store,
@@ -135,20 +136,41 @@ passport.use(
       }
     )
   );
+  passport.use(
+    new FacebookStrategy(
+      {
+        clientID: process.env.FACEBOOK_APP_ID,
+        clientSecret: process.env.FACEBOOK_APP_SECRET,
+        callbackURL: process.env.FACEBOOK_CALLBACK_URL,
+        profileFields: ["id", "displayName", "photos", "email"],
+      },
+      (accessToken, refreshToken, profile, done) => {
+        // Save user details in database
+        return done(null, profile);
+      }
+    )
+  );
 
-passport.serializeUser((user, done) => {
-  done(null, user.id);
-});
+app.get("/auth/facebook", passport.authenticate("facebook", { scope: ["email"] }));
 
-passport.deserializeUser(async (id, done) => {
-  try {
-    const user = await User.findById(id);
-    done(null, user);
-  } catch (err) {
-    done(err, null);
+// Facebook Callback Route
+app.get(
+  "/auth/facebook/callback",
+  passport.authenticate("facebook", {
+    failureRedirect: "/login",
+    failureFlash: true, // Error messages show karne ke liye
+  }),
+  (req, res) => {
+    console.log("✅ Google Login Successful!");
+      console.log("🔍 Stored Redirect URL:", req.session.redirectUrl);
+      
+      let redirectUrl = req.session.redirectUrl || "/listings"; // ✅ Default fallback
+      delete req.session.redirectUrl;
+      
+      console.log("🚀 Redirecting to:", redirectUrl);
+      res.redirect(redirectUrl);
   }
-});
-
+);
 app.use((err, req, res, next) => {
     console.error("🔥 ERROR:", err);   
     const statusCode = err.statusCode || 500;
@@ -181,22 +203,13 @@ passport.serializeUser((user, done) => {
       res.redirect(redirectUrl);
     }
   );
-  app.get("/auth/facebook", (req, res) => {
-    res.send("Facebook OAuth in progress...");
-  });
+
   
     
 
-// app.use((req, res, next) => {
-//     res.locals.currentUser = req.user;
-//     next();
-// });
 
 // Routes
-app.get("/", wrapAsync(async (req, res) => {
-    // res.send("hii");
-    res.render("listings/try.ejs")
-}));
+
 
 
 app.use("/listings", listingRoutes);
