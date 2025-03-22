@@ -1,4 +1,4 @@
-const Listing = require("listing");
+const Listing = require("../modules/listing");
 const Review = require("../modules/review");
 const wrapAsync = require("../utils/WrapAsync");
 const { reviewSchema } = require("../schema");

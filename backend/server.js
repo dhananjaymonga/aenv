@@ -15,7 +15,7 @@ const wrapAsync = require("./utils/WrapAsync");
 const expressError = require("./utils/ExpressError");
 const { reviewSchema } = require("./schema");
 
-const Listing = require("listing");
+const Listing = require("./modules/listing");
 const Review = require("./modules/review");
 const session =require("express-session")
 const MongoStore= require("connect-mongo")
