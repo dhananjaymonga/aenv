@@ -1,5 +1,4 @@
 <%layout("/layouts/boilerplate")%>
-
 <body>
     <div class="container mx-auto px-4 mt-6">
         <%- include('../includes/pannel') %>
@@ -26,33 +25,32 @@
 
             <div id="scrollContainer" class="flex gap-4 overflow-x-auto no-scrollbar scroll-smooth px-12">
                 <% let categories = [
-{ name: "All", icon: "list", type: "all" },
-    { name: "Farms", icon: "tractor", type: "farms" },
-    { name: "Beach", icon: "umbrella", type: "beach" },
-    { name: "City", icon: "building-2", type: "city" },
-    { name: "Mountain", icon: "mountain-snow", type: "mountain" },
-    { name: "Nature", icon: "flower-2", type: "nature" },
-    { name: "Lake", icon: "waves", type: "lake" },
-    { name: "Ski", icon: "tree-palm", type: "ski" },
-    { name: "Island", icon: "island", type: "island" }, // Updated name
-    { name: "Historic", icon: "landmark", type: "historic" },
-    { name: "Desert", icon: "sun", type: "desert" },
-    { name: "Cabins", icon: "home", type: "cabins" },
-    { name: "Camping", icon: "tent", type: "camping" },
-    { name: "Lakefront", icon: "water", type: "lakefront" },
-    { name: "Arctic", icon: "snowflake", type: "arctic" },
-    { name: "Caves", icon: "mountain", type: "caves" },
-    { name: "Vineyards", icon: "grape", type: "vineyards" },
-    { name: "Windmills", icon: "wind", type: "windmills" },
-    { name: "Ryokans", icon: "japanese-castle", type: "ryokans" },
-    { name: "Towers", icon: "building", type: "towers" },
-    { name: "Barns", icon: "barn", type: "barns" },
-    { name: "Lofts", icon: "apartment", type: "lofts" },
-    { name: "Earth Homes", icon: "leaf", type: "earth-homes" },
-    { name: "Houseboats", icon: "anchor", type: "houseboats" },
-    { name: "Luxury", icon: "crown", type: "luxury" },
-    { name: "New", icon: "star", type: "new" },
-  
+                    { name: "All", icon: "list", type: "all" },
+                    { name: "Farms", icon: "tractor", type: "farms" },
+                    { name: "Beach", icon: "umbrella", type: "beach" },
+                    { name: "City", icon: "building-2", type: "city" },
+                    { name: "Mountain", icon: "mountain", type: "mountain" },
+                    { name: "Nature", icon: "tree-pine", type: "nature" },
+                    { name: "Lake", icon: "waves", type: "lake" },
+                    { name: "Ski", icon: "mountain-snow", type: "ski" },
+                    { name: "Island", icon: "map-pin", type: "island" },
+                    { name: "Historic", icon: "landmark", type: "historic" },
+                    { name: "Desert", icon: "sun", type: "desert" },
+                    { name: "Cabins", icon: "home", type: "cabins" },
+                    { name: "Camping", icon: "tent", type: "camping" },
+                    { name: "Lakefront", icon: "waves", type: "lakefront" },
+                    { name: "Arctic", icon: "snowflake", type: "arctic" },
+                    { name: "Caves", icon: "mountain", type: "caves" },
+                    { name: "Vineyards", icon: "grape", type: "vineyards" },
+                    { name: "Windmills", icon: "wind", type: "windmills" },
+                    { name: "Ryokans", icon: "castle", type: "ryokans" },
+                    { name: "Towers", icon: "building", type: "towers" },
+                    { name: "Barns", icon: "warehouse", type: "barns" },
+                    { name: "Lofts", icon: "building", type: "lofts" },
+                    { name: "Earth Homes", icon: "leaf", type: "earth-homes" },
+                    { name: "Houseboats", icon: "anchor", type: "houseboats" },
+                    { name: "Luxury", icon: "crown", type: "luxury" },
+                    { name: "New", icon: "star", type: "new" },
                 ]; %>
 
                 <% categories.forEach(category => { %>
@@ -94,50 +92,116 @@
 
     <!-- JavaScript -->
     <script>
-      document.addEventListener("DOMContentLoaded", function () {
-    lucide.createIcons(); // ✅ Initialize Lucide Icons
+        document.addEventListener("DOMContentLoaded", function () {
+            lucide.createIcons(); // ✅ Initialize Lucide Icons
 
-    const categories = document.querySelectorAll(".category-item");
-    const listingsContainer = document.getElementById("listingsContainer");
-    const allListings = Array.from(document.querySelectorAll(".listing-card")); // Store original listings
+            const categories = document.querySelectorAll(".category-item");
+            const listingsContainer = document.getElementById("listingsContainer");
+            const allListings = Array.from(document.querySelectorAll(".listing-card")); // Store original listings
+            const leftBtn = document.getElementById("leftBtn");
+            const rightBtn = document.getElementById("rightBtn");
+            const scrollContainer = document.getElementById("scrollContainer");
 
-    
-    categories.forEach(category => {
-        category.addEventListener("click", function () {
-            const selectedType = this.getAttribute("data-type").toLowerCase();
-            console.log("🔍 Selected Category:", selectedType);
+            // Category filtering functionality
+            categories.forEach(category => {
+                category.addEventListener("click", function () {
+                    // Remove active class from all categories
+                    categories.forEach(cat => cat.classList.remove("bg-red-500", "text-white"));
+                    
+                    // Add active class to clicked category
+                    this.classList.add("bg-red-500", "text-white");
+                    
+                    const selectedType = this.getAttribute("data-type").toLowerCase();
+                    console.log("🔍 Selected Category:", selectedType);
 
-            // Clear previous listings
-            listingsContainer.innerHTML = "";
+                    // Clear previous listings
+                    listingsContainer.innerHTML = "";
 
-            let filteredListings = allListings.filter(listing => {
-                const listingType = listing.getAttribute("data-type").toLowerCase();
-                return selectedType === "all" || listingType === selectedType;
+                    let filteredListings = allListings.filter(listing => {
+                        const listingType = listing.getAttribute("data-type").toLowerCase();
+                        return selectedType === "all" || listingType === selectedType;
+                    });
+
+                    if (filteredListings.length > 0) {
+                        filteredListings.forEach(listing => listingsContainer.appendChild(listing));
+                    } else {
+                        listingsContainer.innerHTML = "<p class='text-center text-gray-500 text-lg col-span-full'>No listings found for this category.</p>";
+                    }
+                });
             });
 
-            if (filteredListings.length > 0) {
-                filteredListings.forEach(listing => listingsContainer.appendChild(listing));
-            } else {
-                listingsContainer.innerHTML = "<p class='text-center text-gray-500 text-lg col-span-full'>No listings found for this category.</p>";
+            // Set "All" category as active by default
+            if (categories.length > 0) {
+                categories[0].classList.add("bg-red-500", "text-white");
             }
+
+            // Horizontal scroll functionality
+            leftBtn.addEventListener("click", function () {
+                scrollContainer.scrollBy({
+                    left: -200,
+                    behavior: 'smooth'
+                });
+            });
+
+            rightBtn.addEventListener("click", function () {
+                scrollContainer.scrollBy({
+                    left: 200,
+                    behavior: 'smooth'
+                });
+            });
+
+            // Show/hide scroll buttons based on scroll position
+            function updateScrollButtons() {
+                const { scrollLeft, scrollWidth, clientWidth } = scrollContainer;
+                
+                leftBtn.style.display = scrollLeft > 0 ? 'block' : 'none';
+                rightBtn.style.display = scrollLeft < scrollWidth - clientWidth ? 'block' : 'none';
+            }
+
+            scrollContainer.addEventListener('scroll', updateScrollButtons);
+            window.addEventListener('resize', updateScrollButtons);
+            updateScrollButtons(); // Initial check
+
+            // Tax Toggle functionality
+            const toggleTaxes = document.getElementById("toggleTaxes");
+            const priceElements = document.querySelectorAll(".listing-price");
+
+            const originalPrices = Array.from(priceElements).map(el => parseFloat(el.dataset.originalPrice));
+
+            toggleTaxes.addEventListener("change", function () {
+                priceElements.forEach((el, index) => {
+                    let originalPrice = originalPrices[index];
+                    let newPrice = toggleTaxes.checked ? (originalPrice * 1.18).toFixed(2) : originalPrice.toFixed(2);
+                    el.textContent = `₹${newPrice}/night`;
+                });
+            });
+
+            // Re-initialize icons after dynamic content changes
+            const observer = new MutationObserver(function(mutations) {
+                mutations.forEach(function(mutation) {
+                    if (mutation.type === 'childList') {
+                        lucide.createIcons();
+                    }
+                });
+            });
+
+            observer.observe(listingsContainer, { childList: true });
         });
-    });
-
-    // Tax Toggle
-    const toggleTaxes = document.getElementById("toggleTaxes");
-    const priceElements = document.querySelectorAll(".listing-price");
-
-    const originalPrices = Array.from(priceElements).map(el => parseFloat(el.dataset.originalPrice));
-
-    toggleTaxes.addEventListener("change", function () {
-        priceElements.forEach((el, index) => {
-            let originalPrice = originalPrices[index];
-            let newPrice = toggleTaxes.checked ? (originalPrice * 1.18).toFixed(2) : originalPrice.toFixed(2);
-            el.textContent = `₹${newPrice}/night`;
-        });
-    });
-});
-
     </script>
+
+    <style>
+        .no-scrollbar::-webkit-scrollbar {
+            display: none;
+        }
+        .no-scrollbar {
+            -ms-overflow-style: none;
+            scrollbar-width: none;
+        }
+        
+        .category-item.bg-red-500 i {
+            color: white !important;
+        }
+    </style>
 </body>
+<!-- hd -->
 </html>
